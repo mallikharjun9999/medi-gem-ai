@@ -30,6 +30,9 @@ export default function DashboardRedirector() {
         case 'doctor':
           router.replace('/dashboard/doctor');
           break;
+        case 'admin':
+          router.replace('/dashboard/admin');
+          break;
         default:
           // If role is unknown, maybe logout or redirect to a generic error page
           router.replace('/login');

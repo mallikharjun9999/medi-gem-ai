@@ -18,7 +18,7 @@ interface AuthContextType {
 
 interface UserData {
   uid: string;
-  role: 'patient' | 'caregiver' | 'doctor';
+  role: 'patient' | 'caregiver' | 'doctor' | 'admin';
   name: string;
   email: string;
 }
