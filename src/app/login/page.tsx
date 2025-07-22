@@ -60,14 +60,12 @@ export default function LoginPage() {
             <Logo className="size-8" />
             <span className="ml-2 text-lg font-semibold">MediGem</span>
           </Link>
-        </div>
-        <div className="absolute top-4 right-4">
-             <Button variant="outline" size="icon" asChild>
-                <Link href="/">
-                <Home className="h-4 w-4" />
-                <span className="sr-only">Home</span>
-                </Link>
-            </Button>
+           <Button variant="outline" size="icon" asChild>
+              <Link href="/">
+              <Home className="h-4 w-4" />
+              <span className="sr-only">Home</span>
+              </Link>
+          </Button>
         </div>
       <Card className="w-full max-w-sm">
         <CardHeader>
