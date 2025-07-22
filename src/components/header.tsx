@@ -18,7 +18,7 @@ import { useAuth } from '@/hooks/use-auth';
 import { useRouter } from 'next/navigation';
 
 export function Header() {
-  const { logout } = useAuth();
+  const { logout, userData } = useAuth();
   const router = useRouter();
 
   const handleLogout = async () => {
@@ -45,7 +45,7 @@ export function Header() {
       </Breadcrumb>
       
       <div className="ml-auto flex items-center gap-2">
-        <LogVitalsDialog />
+        {userData?.role === 'patient' && <LogVitalsDialog />}
         <Button variant="outline" size="icon" className="h-8 w-8" asChild>
           <Link href="/">
             <Home className="h-4 w-4" />
