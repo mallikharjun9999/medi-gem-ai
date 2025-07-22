@@ -15,7 +15,7 @@ import {
   SidebarFooter,
   SidebarInset,
 } from '@/components/ui/sidebar';
-import { Home, Users, BarChart3, LogOut, Settings } from 'lucide-react';
+import { Home, Users, BarChart3, Settings } from 'lucide-react';
 import { Logo } from '@/components/icons';
 import { Header } from '@/components/header';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -31,6 +31,14 @@ const allPatients = [
     { id: 'patient4', name: 'Alice Williams', lastCheckup: '2024-07-22', risk: 'High', status: 'High' },
     { id: 'patient5', name: 'Chris Green', lastCheckup: '2024-07-01', risk: 'Low', status: 'Normal' },
   ];
+
+const populationAnalytics = {
+    avgHeartRate: 76,
+    avgSystolic: 124,
+    avgDiastolic: 81,
+    avgOxygen: 97,
+    highRiskCount: 1,
+}
 
 export default function DoctorDashboard() {
   const { user, userData, loading, logout } = useAuth();
@@ -93,8 +101,8 @@ export default function DoctorDashboard() {
         <main className="p-4 sm:p-6 flex-1">
           <h1 className="text-2xl font-bold mb-4">Doctor Dashboard</h1>
           <p className="text-muted-foreground mb-6">Welcome, {userData.name}.</p>
-            <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-             <div className="lg:col-span-3">
+            <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-1">
+             <div className="lg:col-span-1">
                 <Card>
                     <CardHeader>
                         <CardTitle>All Patients</CardTitle>
@@ -136,10 +144,36 @@ export default function DoctorDashboard() {
                     </CardContent>
                 </Card>
             </div>
-             <div className="lg:col-span-3">
+            <div className="lg:col-span-1">
                 <Card>
                     <CardHeader>
                         <CardTitle>Population Health Analytics</CardTitle>
+                        <CardDescription>High-level overview of patient population vitals.</CardDescription>
+                    </CardHeader>
+                    <CardContent className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
+                        <div className="rounded-lg border p-4">
+                            <h3 className="text-sm font-medium text-muted-foreground">Avg. Heart Rate</h3>
+                            <p className="text-2xl font-bold">{populationAnalytics.avgHeartRate} <span className="text-sm font-normal">BPM</span></p>
+                        </div>
+                         <div className="rounded-lg border p-4">
+                            <h3 className="text-sm font-medium text-muted-foreground">Avg. Blood Pressure</h3>
+                            <p className="text-2xl font-bold">{populationAnalytics.avgSystolic}/{populationAnalytics.avgDiastolic} <span className="text-sm font-normal">mmHg</span></p>
+                        </div>
+                         <div className="rounded-lg border p-4">
+                            <h3 className="text-sm font-medium text-muted-foreground">Avg. O2 Saturation</h3>
+                            <p className="text-2xl font-bold">{populationAnalytics.avgOxygen}<span className="text-sm font-normal">%</span></p>
+                        </div>
+                         <div className="rounded-lg border p-4">
+                            <h3 className="text-sm font-medium text-muted-foreground">High-Risk Patients</h3>
+                            <p className="text-2xl font-bold">{populationAnalytics.highRiskCount}</p>
+                        </div>
+                    </CardContent>
+                </Card>
+             </div>
+             <div className="lg:col-span-1">
+                <Card>
+                    <CardHeader>
+                        <CardTitle>Patient Vitals Analytics</CardTitle>
                         <CardDescription>Overview of patient vitals across the population.</CardDescription>
                     </CardHeader>
                     <CardContent>
