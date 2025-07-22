@@ -2,8 +2,8 @@
 'use client';
 
 import { createContext, useEffect, useState } from 'react';
-import { onAuthStateChanged, User } from 'firebase/auth';
-import { doc, getDoc } from 'firebase/firestore';
+import { onAuthStateChanged, User, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut } from 'firebase/auth';
+import { doc, getDoc, setDoc } from 'firebase/firestore';
 import { auth, db } from '@/lib/firebase';
 import { Skeleton } from '@/components/ui/skeleton';
 
@@ -34,9 +34,14 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
       setUser(user);
       if (user) {
-        const userDoc = await getDoc(doc(db, 'users', user.uid));
+        const userDocRef = doc(db, 'users', user.uid);
+        const userDoc = await getDoc(userDocRef);
         if (userDoc.exists()) {
           setUserData(userDoc.data() as UserData);
+        } else {
+            // Handle case where user exists in Auth but not in Firestore.
+            // This can happen if Firestore doc creation fails during signup.
+            setUserData(null);
         }
       } else {
         setUserData(null);
@@ -48,13 +53,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }, []);
 
   const login = (email: string, pass: string) => {
-    const { signInWithEmailAndPassword } = require('firebase/auth');
     return signInWithEmailAndPassword(auth, email, pass);
   };
   
   const signup = async (email: string, pass: string, name: string, role: string) => {
-    const { createUserWithEmailAndPassword } = require('firebase/auth');
-    const { setDoc } = require('firebase/firestore');
     const userCredential = await createUserWithEmailAndPassword(auth, email, pass);
     const user = userCredential.user;
     await setDoc(doc(db, 'users', user.uid), {
@@ -66,28 +68,26 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   };
 
   const logout = () => {
-    const { signOut } = require('firebase/auth');
     return signOut(auth);
   }
 
-  if (loading) {
-    return (
-      <div className="flex items-center justify-center h-screen">
-          <div className="flex flex-col items-center gap-4">
-              <Skeleton className="h-12 w-12 rounded-full" />
-              <div className="space-y-2">
-                  <Skeleton className="h-4 w-[250px]" />
-                  <Skeleton className="h-4 w-[200px]" />
-              </div>
-          </div>
-      </div>
-    );
-  }
-
+  const value = { user, userData, loading, login, signup, logout };
 
   return (
-    <AuthContext.Provider value={{ user, userData, loading, login, signup, logout }}>
-      {children}
+    <AuthContext.Provider value={value}>
+      {loading ? (
+        <div className="flex items-center justify-center h-screen">
+            <div className="flex flex-col items-center gap-4">
+                <Skeleton className="h-12 w-12 rounded-full" />
+                <div className="space-y-2">
+                    <Skeleton className="h-4 w-[250px]" />
+                    <Skeleton className="h-4 w-[200px]" />
+                </div>
+            </div>
+        </div>
+      ) : (
+        children
+      )}
     </AuthContext.Provider>
   );
 }
