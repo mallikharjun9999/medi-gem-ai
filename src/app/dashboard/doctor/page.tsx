@@ -3,7 +3,7 @@
 
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/hooks/use-auth';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import {
   SidebarProvider,
   Sidebar,
@@ -43,6 +43,7 @@ const populationAnalytics = {
 export default function DoctorDashboard() {
   const { user, userData, loading, logout } = useAuth();
   const router = useRouter();
+  const [activeView, setActiveView] = useState('dashboard');
 
   useEffect(() => {
     if (!loading && (!user || userData?.role !== 'doctor')) {
@@ -54,56 +55,86 @@ export default function DoctorDashboard() {
     return <div className="flex h-screen items-center justify-center">Loading...</div>;
   }
 
-  return (
-    <SidebarProvider>
-      <Sidebar>
-        <SidebarHeader>
-          <div className="flex items-center gap-2" data-sidebar="logo">
-            <Logo className="size-8" />
-            <span className="text-lg font-semibold">MediGem</span>
-          </div>
-        </SidebarHeader>
-        <SidebarContent>
-          <SidebarMenu>
-            <SidebarMenuItem>
-              <SidebarMenuButton href="#" isActive>
-                <Home />
-                Dashboard
-              </SidebarMenuButton>
-            </SidebarMenuItem>
-            <SidebarMenuItem>
-              <SidebarMenuButton href="#">
-                <Users />
-                All Patients
-              </SidebarMenuButton>
-            </SidebarMenuItem>
-             <SidebarMenuItem>
-              <SidebarMenuButton href="#">
-                <BarChart3 />
-                Analytics
-              </SidebarMenuButton>
-            </SidebarMenuItem>
-          </SidebarMenu>
-        </SidebarContent>
-        <SidebarFooter>
-          <SidebarMenu>
-            <SidebarMenuItem>
-              <SidebarMenuButton href="#">
-                <Settings />
-                Settings
-              </SidebarMenuButton>
-            </SidebarMenuItem>
-          </SidebarMenu>
-        </SidebarFooter>
-      </Sidebar>
-      <SidebarInset>
-        <Header />
-        <main className="p-4 sm:p-6 flex-1">
-          <h1 className="text-2xl font-bold mb-4">Doctor Dashboard</h1>
-          <p className="text-muted-foreground mb-6">Welcome, {userData.name}.</p>
-            <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-1">
-             <div className="lg:col-span-1">
-                <Card>
+  const renderContent = () => {
+    switch(activeView) {
+        case 'dashboard':
+            return (
+                <div className="grid gap-6">
+                     <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-1">
+                        <div className="lg:col-span-1">
+                            <Card>
+                                <CardHeader>
+                                    <CardTitle>Population Health Analytics</CardTitle>
+                                    <CardDescription>High-level overview of patient population vitals.</CardDescription>
+                                </CardHeader>
+                                <CardContent className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
+                                    <div className="rounded-lg border p-4">
+                                        <h3 className="text-sm font-medium text-muted-foreground">Avg. Heart Rate</h3>
+                                        <p className="text-2xl font-bold">{populationAnalytics.avgHeartRate} <span className="text-sm font-normal">BPM</span></p>
+                                    </div>
+                                    <div className="rounded-lg border p-4">
+                                        <h3 className="text-sm font-medium text-muted-foreground">Avg. Blood Pressure</h3>
+                                        <p className="text-2xl font-bold">{populationAnalytics.avgSystolic}/{populationAnalytics.avgDiastolic} <span className="text-sm font-normal">mmHg</span></p>
+                                    </div>
+                                    <div className="rounded-lg border p-4">
+                                        <h3 className="text-sm font-medium text-muted-foreground">Avg. O2 Saturation</h3>
+                                        <p className="text-2xl font-bold">{populationAnalytics.avgOxygen}<span className="text-sm font-normal">%</span></p>
+                                    </div>
+                                    <div className="rounded-lg border p-4">
+                                        <h3 className="text-sm font-medium text-muted-foreground">High-Risk Patients</h3>
+                                        <p className="text-2xl font-bold">{populationAnalytics.highRiskCount}</p>
+                                    </div>
+                                </CardContent>
+                            </Card>
+                        </div>
+                        <div className="lg:col-span-1">
+                            <Card>
+                                <CardHeader>
+                                    <CardTitle>Recent Patient Activity</CardTitle>
+                                    <CardDescription>A list of recently active patients.</CardDescription>
+                                </CardHeader>
+                                <CardContent>
+                                <Table>
+                                    <TableHeader>
+                                        <TableRow>
+                                        <TableHead>Patient Name</TableHead>
+                                        <TableHead>Last Checkup</TableHead>
+                                        <TableHead>Risk Level</TableHead>
+                                        <TableHead>Current Status</TableHead>
+                                        <TableHead>Actions</TableHead>
+                                        </TableRow>
+                                    </TableHeader>
+                                    <TableBody>
+                                        {allPatients.slice(0, 5).map((patient) => (
+                                        <TableRow key={patient.id}>
+                                            <TableCell className="font-medium">{patient.name}</TableCell>
+                                            <TableCell>{patient.lastCheckup}</TableCell>
+                                            <TableCell>
+                                                <Badge variant={patient.risk === 'Low' ? 'outline' : patient.risk === 'Medium' ? 'secondary' : 'destructive'}>
+                                                    {patient.risk}
+                                                </Badge>
+                                            </TableCell>
+                                            <TableCell>
+                                                <Badge variant={patient.status === 'Normal' ? 'default' : 'destructive'}  className={patient.status === 'Normal' ? 'bg-accent text-accent-foreground' : ''}>
+                                                    {patient.status}
+                                                </Badge>
+                                            </TableCell>
+                                            <TableCell>
+                                                <button className="text-primary hover:underline">View Chart</button>
+                                            </TableCell>
+                                        </TableRow>
+                                        ))}
+                                    </TableBody>
+                                    </Table>
+                                </CardContent>
+                            </Card>
+                        </div>
+                    </div>
+                </div>
+            );
+        case 'all-patients':
+            return (
+                 <Card>
                     <CardHeader>
                         <CardTitle>All Patients</CardTitle>
                         <CardDescription>A list of all patients in the system.</CardDescription>
@@ -143,34 +174,9 @@ export default function DoctorDashboard() {
                         </Table>
                     </CardContent>
                 </Card>
-            </div>
-            <div className="lg:col-span-1">
-                <Card>
-                    <CardHeader>
-                        <CardTitle>Population Health Analytics</CardTitle>
-                        <CardDescription>High-level overview of patient population vitals.</CardDescription>
-                    </CardHeader>
-                    <CardContent className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
-                        <div className="rounded-lg border p-4">
-                            <h3 className="text-sm font-medium text-muted-foreground">Avg. Heart Rate</h3>
-                            <p className="text-2xl font-bold">{populationAnalytics.avgHeartRate} <span className="text-sm font-normal">BPM</span></p>
-                        </div>
-                         <div className="rounded-lg border p-4">
-                            <h3 className="text-sm font-medium text-muted-foreground">Avg. Blood Pressure</h3>
-                            <p className="text-2xl font-bold">{populationAnalytics.avgSystolic}/{populationAnalytics.avgDiastolic} <span className="text-sm font-normal">mmHg</span></p>
-                        </div>
-                         <div className="rounded-lg border p-4">
-                            <h3 className="text-sm font-medium text-muted-foreground">Avg. O2 Saturation</h3>
-                            <p className="text-2xl font-bold">{populationAnalytics.avgOxygen}<span className="text-sm font-normal">%</span></p>
-                        </div>
-                         <div className="rounded-lg border p-4">
-                            <h3 className="text-sm font-medium text-muted-foreground">High-Risk Patients</h3>
-                            <p className="text-2xl font-bold">{populationAnalytics.highRiskCount}</p>
-                        </div>
-                    </CardContent>
-                </Card>
-             </div>
-             <div className="lg:col-span-1">
+            );
+        case 'analytics':
+             return (
                 <Card>
                     <CardHeader>
                         <CardTitle>Patient Vitals Analytics</CardTitle>
@@ -180,8 +186,60 @@ export default function DoctorDashboard() {
                        <VitalsHistoryChart />
                     </CardContent>
                 </Card>
-             </div>
+             );
+        default:
+            return null;
+    }
+  }
+
+  return (
+    <SidebarProvider>
+      <Sidebar>
+        <SidebarHeader>
+          <div className="flex items-center gap-2" data-sidebar="logo">
+            <Logo className="size-8" />
+            <span className="text-lg font-semibold">MediGem</span>
           </div>
+        </SidebarHeader>
+        <SidebarContent>
+          <SidebarMenu>
+            <SidebarMenuItem>
+              <SidebarMenuButton onClick={() => setActiveView('dashboard')} isActive={activeView === 'dashboard'}>
+                <Home />
+                Dashboard
+              </SidebarMenuButton>
+            </SidebarMenuItem>
+            <SidebarMenuItem>
+              <SidebarMenuButton onClick={() => setActiveView('all-patients')} isActive={activeView === 'all-patients'}>
+                <Users />
+                All Patients
+              </SidebarMenuButton>
+            </SidebarMenuItem>
+             <SidebarMenuItem>
+              <SidebarMenuButton onClick={() => setActiveView('analytics')} isActive={activeView === 'analytics'}>
+                <BarChart3 />
+                Analytics
+              </SidebarMenuButton>
+            </SidebarMenuItem>
+          </SidebarMenu>
+        </SidebarContent>
+        <SidebarFooter>
+          <SidebarMenu>
+            <SidebarMenuItem>
+              <SidebarMenuButton href="#">
+                <Settings />
+                Settings
+              </SidebarMenuButton>
+            </SidebarMenuItem>
+          </SidebarMenu>
+        </SidebarFooter>
+      </Sidebar>
+      <SidebarInset>
+        <Header />
+        <main className="p-4 sm:p-6 flex-1">
+          <h1 className="text-2xl font-bold mb-4">Doctor Dashboard</h1>
+          <p className="text-muted-foreground mb-6">Welcome, {userData.name}. You have access to all patient data.</p>
+          {renderContent()}
         </main>
       </SidebarInset>
     </SidebarProvider>
