@@ -38,8 +38,9 @@ const systemMetrics = {
 };
 
 export default function AdminDashboard() {
-  const { user, userData, loading, logout } = useAuth();
+  const { user, userData, loading } = useAuth();
   const router = useRouter();
+  const [activeView, setActiveView] = useState('dashboard');
 
   useEffect(() => {
     if (!loading && (!user || userData?.role !== 'admin')) {
@@ -51,6 +52,94 @@ export default function AdminDashboard() {
     return <div className="flex h-screen items-center justify-center">Loading...</div>;
   }
   
+  const renderContent = () => {
+      switch(activeView) {
+        case 'dashboard':
+            return (
+                 <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+                    <Card>
+                        <CardHeader>
+                            <CardTitle>Total Vitals Logs</CardTitle>
+                            <CardDescription>{systemMetrics.totalLogs}</CardDescription>
+                        </CardHeader>
+                    </Card>
+                    <Card>
+                        <CardHeader>
+                            <CardTitle>Active Users</CardTitle>
+                            <CardDescription>{systemMetrics.activeUsers}</CardDescription>
+                        </CardHeader>
+                    </Card>
+                    <Card>
+                        <CardHeader>
+                            <CardTitle>Critical Alerts</CardTitle>
+                            <CardDescription>{systemMetrics.alertCount}</CardDescription>
+                        </CardHeader>
+                    </Card>
+                </div>
+            )
+        case 'user-management':
+            return (
+                 <Card>
+                    <CardHeader>
+                        <CardTitle>User Management</CardTitle>
+                        <CardDescription>View and manage all users in the system.</CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                        <Table>
+                        <TableHeader>
+                            <TableRow>
+                            <TableHead>User Name</TableHead>
+                            <TableHead>Email</TableHead>
+                            <TableHead>Current Role</TableHead>
+                            <TableHead>Change Role</TableHead>
+                            </TableRow>
+                        </TableHeader>
+                        <TableBody>
+                            {allUsers.map((u) => (
+                            <TableRow key={u.id}>
+                                <TableCell className="font-medium">{u.name}</TableCell>
+                                <TableCell>{u.email}</TableCell>
+                                <TableCell>
+                                <Badge variant="outline">{u.role}</Badge>
+                                </TableCell>
+                                <TableCell>
+                                    <Select defaultValue={u.role}>
+                                        <SelectTrigger className="w-[180px]">
+                                            <SelectValue placeholder="Select role" />
+                                        </SelectTrigger>
+                                        <SelectContent>
+                                            <SelectItem value="patient">Patient</SelectItem>
+                                            <SelectItem value="caregiver">Caregiver</SelectItem>
+                                            <SelectItem value="doctor">Doctor</SelectItem>
+                                            <SelectItem value="admin">Admin</SelectItem>
+                                        </SelectContent>
+                                    </Select>
+                                </TableCell>
+                            </TableRow>
+                            ))}
+                        </TableBody>
+                        </Table>
+                    </CardContent>
+                </Card>
+            );
+        case 'system-metrics':
+        case 'alerts-config':
+            return (
+                <Card>
+                    <CardHeader>
+                        <CardTitle>Coming Soon</CardTitle>
+                        <CardDescription>This feature is under development.</CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                        <p>Stay tuned for updates!</p>
+                    </CardContent>
+                </Card>
+            );
+        default:
+            return null;
+      }
+  }
+
   return (
     <SidebarProvider>
       <Sidebar>
@@ -63,25 +152,25 @@ export default function AdminDashboard() {
         <SidebarContent>
           <SidebarMenu>
             <SidebarMenuItem>
-              <SidebarMenuButton href="#" isActive>
+              <SidebarMenuButton onClick={() => setActiveView('dashboard')} isActive={activeView === 'dashboard'}>
                 <Home />
                 Dashboard
               </SidebarMenuButton>
             </SidebarMenuItem>
             <SidebarMenuItem>
-              <SidebarMenuButton href="#">
+              <SidebarMenuButton onClick={() => setActiveView('user-management')} isActive={activeView === 'user-management'}>
                 <Users />
                 User Management
               </SidebarMenuButton>
             </SidebarMenuItem>
              <SidebarMenuItem>
-              <SidebarMenuButton href="#">
+              <SidebarMenuButton onClick={() => setActiveView('system-metrics')} isActive={activeView === 'system-metrics'}>
                 <BarChart3 />
                 System Metrics
               </SidebarMenuButton>
             </SidebarMenuItem>
              <SidebarMenuItem>
-              <SidebarMenuButton href="#">
+              <SidebarMenuButton onClick={() => setActiveView('alerts-config')} isActive={activeView === 'alerts-config'}>
                 <BellRing />
                 Alerts Config
               </SidebarMenuButton>
@@ -105,69 +194,14 @@ export default function AdminDashboard() {
           <h1 className="text-2xl font-bold mb-4">Admin Dashboard</h1>
           <p className="text-muted-foreground mb-6">Welcome, {userData.name}.</p>
           
-          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 mb-6">
-            <Card>
-                <CardHeader>
-                    <CardTitle>Total Vitals Logs</CardTitle>
-                    <CardDescription>{systemMetrics.totalLogs}</CardDescription>
-                </CardHeader>
-            </Card>
-            <Card>
-                <CardHeader>
-                    <CardTitle>Active Users</CardTitle>
-                    <CardDescription>{systemMetrics.activeUsers}</CardDescription>
-                </CardHeader>
-            </Card>
-            <Card>
-                <CardHeader>
-                    <CardTitle>Critical Alerts</CardTitle>
-                    <CardDescription>{systemMetrics.alertCount}</CardDescription>
-                </CardHeader>
-            </Card>
-          </div>
+          {activeView === 'dashboard' && (
+             <div className="mb-6">
+                {renderContent()}
+             </div>
+          )}
+          
+          {activeView !== 'dashboard' && renderContent()}
 
-           <Card>
-              <CardHeader>
-                <CardTitle>User Management</CardTitle>
-                <CardDescription>View and manage all users in the system.</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <Table>
-                  <TableHeader>
-                    <TableRow>
-                      <TableHead>User Name</TableHead>
-                      <TableHead>Email</TableHead>
-                      <TableHead>Current Role</TableHead>
-                      <TableHead>Change Role</TableHead>
-                    </TableRow>
-                  </TableHeader>
-                  <TableBody>
-                    {allUsers.map((u) => (
-                      <TableRow key={u.id}>
-                        <TableCell className="font-medium">{u.name}</TableCell>
-                        <TableCell>{u.email}</TableCell>
-                        <TableCell>
-                           <Badge variant="outline">{u.role}</Badge>
-                        </TableCell>
-                        <TableCell>
-                            <Select defaultValue={u.role}>
-                                <SelectTrigger className="w-[180px]">
-                                    <SelectValue placeholder="Select role" />
-                                </SelectTrigger>
-                                <SelectContent>
-                                    <SelectItem value="patient">Patient</SelectItem>
-                                    <SelectItem value="caregiver">Caregiver</SelectItem>
-                                    <SelectItem value="doctor">Doctor</SelectItem>
-                                    <SelectItem value="admin">Admin</SelectItem>
-                                </SelectContent>
-                            </Select>
-                        </TableCell>
-                      </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
-              </CardContent>
-            </Card>
         </main>
       </SidebarInset>
     </SidebarProvider>

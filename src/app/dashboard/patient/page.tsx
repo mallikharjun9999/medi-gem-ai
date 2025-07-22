@@ -3,7 +3,7 @@
 
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/hooks/use-auth';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import {
   SidebarProvider,
   Sidebar,
@@ -15,7 +15,7 @@ import {
   SidebarFooter,
   SidebarInset,
 } from '@/components/ui/sidebar';
-import { Home, Stethoscope, FileText, LogOut, Settings } from 'lucide-react';
+import { Home, Stethoscope, FileText, Settings } from 'lucide-react';
 import { Logo } from '@/components/icons';
 import { Header } from '@/components/header';
 import { VitalsHistoryChart } from '@/components/vitals-history-chart';
@@ -23,6 +23,7 @@ import { HealthQueryCard } from '@/components/health-query-card';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Badge } from '@/components/ui/badge';
+import { LogVitalsDialog } from '@/components/log-vitals-dialog';
 
 const recentVitals = [
   { date: '2024-07-29', heartRate: 75, bp: '120/80', temp: 98.6, status: 'Normal' },
@@ -32,8 +33,9 @@ const recentVitals = [
 ];
 
 export default function PatientDashboard() {
-  const { user, userData, loading, logout } = useAuth();
+  const { user, userData, loading } = useAuth();
   const router = useRouter();
+  const [activeView, setActiveView] = useState('dashboard');
 
   useEffect(() => {
     if (!loading && (!user || userData?.role !== 'patient')) {
@@ -42,58 +44,14 @@ export default function PatientDashboard() {
   }, [user, userData, loading, router]);
 
   if (loading || !userData) {
-    // You can return a loading spinner here
     return <div className="flex h-screen items-center justify-center">Loading...</div>;
   }
-
-  return (
-    <SidebarProvider>
-      <Sidebar>
-        <SidebarHeader>
-          <div className="flex items-center gap-2" data-sidebar="logo">
-            <Logo className="size-8" />
-            <span className="text-lg font-semibold">MediGem</span>
-          </div>
-        </SidebarHeader>
-        <SidebarContent>
-          <SidebarMenu>
-            <SidebarMenuItem>
-              <SidebarMenuButton href="#" isActive>
-                <Home />
-                Dashboard
-              </SidebarMenuButton>
-            </SidebarMenuItem>
-            <SidebarMenuItem>
-              <SidebarMenuButton href="#">
-                <Stethoscope />
-                Vitals
-              </SidebarMenuButton>
-            </SidebarMenuItem>
-            <SidebarMenuItem>
-              <SidebarMenuButton href="#">
-                <FileText />
-                Reports
-              </SidebarMenuButton>
-            </SidebarMenuItem>
-          </SidebarMenu>
-        </SidebarContent>
-        <SidebarFooter>
-          <SidebarMenu>
-            <SidebarMenuItem>
-              <SidebarMenuButton href="#">
-                <Settings />
-                Settings
-              </SidebarMenuButton>
-            </SidebarMenuItem>
-          </SidebarMenu>
-        </SidebarFooter>
-      </Sidebar>
-      <SidebarInset>
-        <Header />
-        <main className="p-4 sm:p-6 flex-1">
-          <h1 className="text-2xl font-bold mb-4">Dashboard</h1>
-          <p className="text-muted-foreground mb-6">Welcome, {userData.name}.</p>
-          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+  
+  const renderContent = () => {
+    switch (activeView) {
+      case 'dashboard':
+        return (
+            <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
              <div className="lg:col-span-2">
                 <Card>
                     <CardHeader>
@@ -143,6 +101,86 @@ export default function PatientDashboard() {
                 </Card>
             </div>
           </div>
+        );
+        case 'vitals':
+            return (
+                <Card>
+                    <CardHeader>
+                        <CardTitle>Log Your Vitals</CardTitle>
+                        <CardDescription>Enter your current vitals and symptoms.</CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                       <div className="flex justify-center">
+                         <LogVitalsDialog />
+                       </div>
+                    </CardContent>
+                </Card>
+            );
+        case 'reports':
+            return (
+                <Card>
+                    <CardHeader>
+                        <CardTitle>Your Reports</CardTitle>
+                        <CardDescription>View and download your health reports.</CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                        <p>Reports functionality coming soon.</p>
+                    </CardContent>
+                </Card>
+            );
+        default:
+            return null;
+    }
+  }
+
+  return (
+    <SidebarProvider>
+      <Sidebar>
+        <SidebarHeader>
+          <div className="flex items-center gap-2" data-sidebar="logo">
+            <Logo className="size-8" />
+            <span className="text-lg font-semibold">MediGem</span>
+          </div>
+        </SidebarHeader>
+        <SidebarContent>
+          <SidebarMenu>
+            <SidebarMenuItem>
+              <SidebarMenuButton onClick={() => setActiveView('dashboard')} isActive={activeView === 'dashboard'}>
+                <Home />
+                Dashboard
+              </SidebarMenuButton>
+            </SidebarMenuItem>
+            <SidebarMenuItem>
+              <SidebarMenuButton onClick={() => setActiveView('vitals')} isActive={activeView === 'vitals'}>
+                <Stethoscope />
+                Vitals
+              </SidebarMenuButton>
+            </SidebarMenuItem>
+            <SidebarMenuItem>
+              <SidebarMenuButton onClick={() => setActiveView('reports')} isActive={activeView === 'reports'}>
+                <FileText />
+                Reports
+              </SidebarMenuButton>
+            </SidebarMenuItem>
+          </SidebarMenu>
+        </SidebarContent>
+        <SidebarFooter>
+          <SidebarMenu>
+            <SidebarMenuItem>
+              <SidebarMenuButton href="#">
+                <Settings />
+                Settings
+              </SidebarMenuButton>
+            </SidebarMenuItem>
+          </SidebarMenu>
+        </SidebarFooter>
+      </Sidebar>
+      <SidebarInset>
+        <Header />
+        <main className="p-4 sm:p-6 flex-1">
+          <h1 className="text-2xl font-bold mb-4">Dashboard</h1>
+          <p className="text-muted-foreground mb-6">Welcome, {userData.name}.</p>
+          {renderContent()}
         </main>
       </SidebarInset>
     </SidebarProvider>
