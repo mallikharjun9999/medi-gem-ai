@@ -1,0 +1,32 @@
+
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Users can read their own user profile
+    match /users/{userId} {
+      allow read, update: if request.auth.uid == userId;
+      // Allow doctors to read any user's profile
+      allow get: if get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'doctor';
+    }
+
+    // Vitals collection rules
+    match /vitals/{vitalsId} {
+      // Patients can create their own vitals records
+      allow create: if request.auth.uid == request.resource.data.patientUid;
+
+      // Patients can read their own vitals
+      // Caregivers can read vitals of their assigned patients
+      // Doctors can read any vitals
+      allow read: if request.auth.uid == resource.data.patientUid ||
+                   (get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'doctor') ||
+                   (get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'caregiver' && resource.data.patientUid in get(/databases/$(database)/documents/users/$(request.auth.uid)).data.assignedPatients);
+    }
+
+    // Default deny all other access
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}
