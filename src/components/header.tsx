@@ -1,6 +1,6 @@
 'use client';
 
-import { Search, Bell } from 'lucide-react';
+import { Search, Bell, Home } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import {
@@ -13,6 +13,7 @@ import {
 } from '@/components/ui/breadcrumb';
 import { SidebarTrigger } from '@/components/ui/sidebar';
 import { LogVitalsDialog } from './log-vitals-dialog';
+import Link from 'next/link';
 
 export function Header() {
   return (
@@ -41,6 +42,12 @@ export function Header() {
           className="w-full rounded-lg bg-background pl-8 md:w-[200px] lg:w-[320px]"
         />
       </div>
+       <Button variant="outline" size="icon" className="h-8 w-8" asChild>
+        <Link href="/">
+          <Home className="h-4 w-4" />
+          <span className="sr-only">Home</span>
+        </Link>
+      </Button>
       <Button variant="outline" size="icon" className="h-8 w-8">
         <Bell className="h-4 w-4" />
         <span className="sr-only">Toggle notifications</span>
