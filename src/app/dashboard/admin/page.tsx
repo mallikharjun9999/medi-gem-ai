@@ -28,7 +28,7 @@ const allUsers = [
   { id: 'user1', name: 'John Doe', email: 'john.doe@example.com', role: 'patient' },
   { id: 'user2', name: 'Jane Smith', email: 'jane.smith@example.com', role: 'caregiver' },
   { id: 'user3', name: 'Dr. Emily White', email: 'emily.white@example.com', role: 'doctor' },
-  { id: 'user4', name: 'Admin User', email: 'admin@medigem.com', role: 'admin' },
+  { id: 'user4', name: 'Admin User', email: 'ajaymaharana9@gmail.com', role: 'admin' },
 ];
 
 const systemMetrics = {
