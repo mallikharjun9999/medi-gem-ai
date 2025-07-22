@@ -103,7 +103,7 @@ export default function AdminDashboard() {
         <Header />
         <main className="p-4 sm:p-6 flex-1">
           <h1 className="text-2xl font-bold mb-4">Admin Dashboard</h1>
-          <p className="text-muted-foreground mb-6">Welcome, {userData.name}. Manage users and system settings.</p>
+          <p className="text-muted-foreground mb-6">Welcome, {userData.name}.</p>
           
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 mb-6">
             <Card>

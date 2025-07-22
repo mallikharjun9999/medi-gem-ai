@@ -90,7 +90,7 @@ export default function CaregiverDashboard() {
         <Header />
         <main className="p-4 sm:p-6 flex-1">
           <h1 className="text-2xl font-bold mb-4">Caregiver Dashboard</h1>
-          <p className="text-muted-foreground mb-6">Welcome, {userData.name}. Here are your assigned patients.</p>
+          <p className="text-muted-foreground mb-6">Welcome, {userData.name}.</p>
            <Card>
               <CardHeader>
                 <CardTitle>Assigned Patients</CardTitle>
