@@ -85,12 +85,6 @@ export default function PatientDashboard() {
                 Settings
               </SidebarMenuButton>
             </SidebarMenuItem>
-            <SidebarMenuItem>
-              <SidebarMenuButton onClick={logout}>
-                <LogOut />
-                Logout
-              </SidebarMenuButton>
-            </SidebarMenuItem>
           </SidebarMenu>
         </SidebarFooter>
       </Sidebar>

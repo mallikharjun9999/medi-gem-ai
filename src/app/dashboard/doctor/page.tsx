@@ -85,12 +85,6 @@ export default function DoctorDashboard() {
                 Settings
               </SidebarMenuButton>
             </SidebarMenuItem>
-            <SidebarMenuItem>
-              <SidebarMenuButton onClick={logout}>
-                <LogOut />
-                Logout
-              </SidebarMenuButton>
-            </SidebarMenuItem>
           </SidebarMenu>
         </SidebarFooter>
       </Sidebar>
@@ -157,4 +151,3 @@ export default function DoctorDashboard() {
     </SidebarProvider>
   );
 }
-

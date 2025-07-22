@@ -13,8 +13,7 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { useToast } from '@/hooks/use-toast';
-import { Logo } from '@/components/icons';
-import { Home } from 'lucide-react';
+import { MainNav } from '@/components/main-nav';
 
 const signupSchema = z.object({
   name: z.string().min(2, 'Name must be at least 2 characters'),
@@ -58,101 +57,92 @@ export default function SignupPage() {
   };
 
   return (
-    <div className="flex min-h-screen flex-col items-center justify-center bg-background px-4">
-      <div className="absolute top-4 left-4 flex items-center gap-4">
-        <Link href="/" className="flex items-center justify-center" prefetch={false}>
-          <Logo className="size-8" />
-          <span className="ml-2 text-lg font-semibold">MediGem</span>
-        </Link>
-        <Button variant="outline" size="icon" asChild>
-            <Link href="/">
-            <Home className="h-4 w-4" />
-            <span className="sr-only">Home</span>
-            </Link>
-        </Button>
-      </div>
-      <Card className="w-full max-w-sm">
-        <CardHeader>
-          <CardTitle className="text-2xl">Sign Up</CardTitle>
-          <CardDescription>Create an account to get started with MediGem.</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="grid gap-4">
-              <FormField
-                control={form.control}
-                name="name"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Name</FormLabel>
-                    <FormControl>
-                      <Input placeholder="John Doe" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="email"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Email</FormLabel>
-                    <FormControl>
-                      <Input type="email" placeholder="m@example.com" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="password"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Password</FormLabel>
-                    <FormControl>
-                      <Input type="password" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="role"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Role</FormLabel>
-                    <Select onValueChange={field.onChange} defaultValue={field.value}>
+    <div className="flex min-h-screen flex-col items-center bg-background">
+      <MainNav />
+      <div className="flex flex-1 items-center justify-center px-4 py-8">
+        <Card className="w-full max-w-sm">
+          <CardHeader>
+            <CardTitle className="text-2xl">Sign Up</CardTitle>
+            <CardDescription>Create an account to get started with MediGem.</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <Form {...form}>
+              <form onSubmit={form.handleSubmit(onSubmit)} className="grid gap-4">
+                <FormField
+                  control={form.control}
+                  name="name"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Name</FormLabel>
                       <FormControl>
-                        <SelectTrigger>
-                          <SelectValue placeholder="Select a role" />
-                        </SelectTrigger>
+                        <Input placeholder="John Doe" {...field} />
                       </FormControl>
-                      <SelectContent>
-                        <SelectItem value="patient">Patient</SelectItem>
-                        <SelectItem value="caregiver">Caregiver</SelectItem>
-                        <SelectItem value="doctor">Doctor</SelectItem>
-                      </SelectContent>
-                    </Select>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <Button type="submit" className="w-full" disabled={form.formState.isSubmitting}>
-                {form.formState.isSubmitting ? 'Creating Account...' : 'Create Account'}
-              </Button>
-            </form>
-          </Form>
-          <div className="mt-4 text-center text-sm">
-            Already have an account?{' '}
-            <Link href="/login" className="underline">
-              Sign in
-            </Link>
-          </div>
-        </CardContent>
-      </Card>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="email"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Email</FormLabel>
+                      <FormControl>
+                        <Input type="email" placeholder="m@example.com" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="password"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Password</FormLabel>
+                      <FormControl>
+                        <Input type="password" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="role"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Role</FormLabel>
+                      <Select onValueChange={field.onChange} defaultValue={field.value}>
+                        <FormControl>
+                          <SelectTrigger>
+                            <SelectValue placeholder="Select a role" />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          <SelectItem value="patient">Patient</SelectItem>
+                          <SelectItem value="caregiver">Caregiver</SelectItem>
+                          <SelectItem value="doctor">Doctor</SelectItem>
+                        </SelectContent>
+                      </Select>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <Button type="submit" className="w-full" disabled={form.formState.isSubmitting}>
+                  {form.formState.isSubmitting ? 'Creating Account...' : 'Create Account'}
+                </Button>
+              </form>
+            </Form>
+            <div className="mt-4 text-center text-sm">
+              Already have an account?{' '}
+              <Link href="/login" className="underline">
+                Sign in
+              </Link>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
     </div>
   );
 }

@@ -12,8 +12,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { useToast } from '@/hooks/use-toast';
-import { Logo } from '@/components/icons';
-import { Home } from 'lucide-react';
+import { MainNav } from '@/components/main-nav';
 
 const loginSchema = z.object({
   email: z.string().email('Invalid email address'),
@@ -54,66 +53,57 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="flex min-h-screen flex-col items-center justify-center bg-background px-4">
-       <div className="absolute top-4 left-4 flex items-center gap-4">
-          <Link href="/" className="flex items-center justify-center" prefetch={false}>
-            <Logo className="size-8" />
-            <span className="ml-2 text-lg font-semibold">MediGem</span>
-          </Link>
-           <Button variant="outline" size="icon" asChild>
-              <Link href="/">
-              <Home className="h-4 w-4" />
-              <span className="sr-only">Home</span>
+    <div className="flex min-h-screen flex-col items-center bg-background">
+      <MainNav />
+      <div className="flex flex-1 items-center justify-center px-4">
+        <Card className="w-full max-w-sm">
+          <CardHeader>
+            <CardTitle className="text-2xl">Login</CardTitle>
+            <CardDescription>Enter your email below to login to your account.</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <Form {...form}>
+              <form onSubmit={form.handleSubmit(onSubmit)} className="grid gap-4">
+                <FormField
+                  control={form.control}
+                  name="email"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Email</FormLabel>
+                      <FormControl>
+                        <Input type="email" placeholder="m@example.com" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="password"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Password</FormLabel>
+                      <FormControl>
+                        <Input type="password" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <Button type="submit" className="w-full" disabled={form.formState.isSubmitting}>
+                  {form.formState.isSubmitting ? 'Signing In...' : 'Sign In'}
+                </Button>
+              </form>
+            </Form>
+            <div className="mt-4 text-center text-sm">
+              Don&apos;t have an account?{' '}
+              <Link href="/signup" className="underline">
+                Sign up
               </Link>
-          </Button>
-        </div>
-      <Card className="w-full max-w-sm">
-        <CardHeader>
-          <CardTitle className="text-2xl">Login</CardTitle>
-          <CardDescription>Enter your email below to login to your account.</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="grid gap-4">
-              <FormField
-                control={form.control}
-                name="email"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Email</FormLabel>
-                    <FormControl>
-                      <Input type="email" placeholder="m@example.com" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="password"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Password</FormLabel>
-                    <FormControl>
-                      <Input type="password" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <Button type="submit" className="w-full" disabled={form.formState.isSubmitting}>
-                {form.formState.isSubmitting ? 'Signing In...' : 'Sign In'}
-              </Button>
-            </form>
-          </Form>
-          <div className="mt-4 text-center text-sm">
-            Don&apos;t have an account?{' '}
-            <Link href="/signup" className="underline">
-              Sign up
-            </Link>
-          </div>
-        </CardContent>
-      </Card>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
     </div>
   );
 }
