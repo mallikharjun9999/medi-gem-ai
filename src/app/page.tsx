@@ -1,4 +1,6 @@
 
+'use client';
+
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import { MainNav } from '@/components/main-nav';
@@ -11,8 +13,14 @@ import {
   CarouselPrevious,
 } from "@/components/ui/carousel";
 import Image from 'next/image';
+import Autoplay from "embla-carousel-autoplay";
+import React from 'react';
 
 export default function LandingPage() {
+    const plugin = React.useRef(
+        Autoplay({ delay: 5000, stopOnInteraction: true })
+    );
+
   return (
     <div className="flex flex-col min-h-screen">
       <MainNav />
@@ -37,7 +45,12 @@ export default function LandingPage() {
                   </Button>
                 </div>
               </div>
-              <Carousel className="w-full max-w-lg mx-auto">
+              <Carousel 
+                plugins={[plugin.current]}
+                className="w-full max-w-lg mx-auto"
+                onMouseEnter={plugin.current.stop}
+                onMouseLeave={plugin.current.reset}
+                >
                 <CarouselContent>
                   <CarouselItem>
                     <Image
