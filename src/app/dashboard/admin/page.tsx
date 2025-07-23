@@ -47,7 +47,7 @@ const systemMetrics = {
 export default function AdminDashboard() {
   const { user, userData, loading } = useAuth();
   const router = useRouter();
-  const [activeView, setActiveView] = useState('dashboard');
+  const [activeView, setActiveView] = useState('system-metrics');
   const [allUsers, setAllUsers] = useState<AppUser[]>([]);
   const [isDataLoading, setIsDataLoading] = useState(true);
   const [alertConfig, setAlertConfig] = useState({
@@ -141,29 +141,6 @@ export default function AdminDashboard() {
   
   const renderContent = () => {
       switch(activeView) {
-        case 'dashboard':
-            return (
-                 <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-                    <Card>
-                        <CardHeader>
-                            <CardTitle>Total Vitals Logs</CardTitle>
-                            <CardDescription>{systemMetrics.totalLogs}</CardDescription>
-                        </CardHeader>
-                    </Card>
-                    <Card>
-                        <CardHeader>
-                            <CardTitle>Active Users</CardTitle>
-                            <CardDescription>{allUsers.length}</CardDescription>
-                        </CardHeader>
-                    </Card>
-                    <Card>
-                        <CardHeader>
-                            <CardTitle>Critical Alerts</CardTitle>
-                            <CardDescription>{systemMetrics.alertCount}</CardDescription>
-                        </CardHeader>
-                    </Card>
-                </div>
-            )
         case 'user-management':
             return (
                  <div className="space-y-6">
@@ -286,21 +263,15 @@ export default function AdminDashboard() {
         <SidebarContent>
           <SidebarMenu>
             <SidebarMenuItem>
-              <SidebarMenuButton onClick={() => setActiveView('dashboard')} isActive={activeView === 'dashboard'}>
-                <Home />
-                Admin Dashboard
+              <SidebarMenuButton onClick={() => setActiveView('system-metrics')} isActive={activeView === 'system-metrics'}>
+                <BarChart3 />
+                System Metrics
               </SidebarMenuButton>
             </SidebarMenuItem>
             <SidebarMenuItem>
               <SidebarMenuButton onClick={() => setActiveView('user-management')} isActive={activeView === 'user-management'}>
                 <Users />
                 User Management
-              </SidebarMenuButton>
-            </SidebarMenuItem>
-             <SidebarMenuItem>
-              <SidebarMenuButton onClick={() => setActiveView('system-metrics')} isActive={activeView === 'system-metrics'}>
-                <BarChart3 />
-                System Metrics
               </SidebarMenuButton>
             </SidebarMenuItem>
              <SidebarMenuItem>
@@ -323,3 +294,5 @@ export default function AdminDashboard() {
     </SidebarProvider>
   );
 }
+
+    
