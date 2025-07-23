@@ -14,10 +14,9 @@ import {
   SidebarMenuItem,
   SidebarMenuButton,
   SidebarContent,
-  SidebarFooter,
   SidebarInset,
 } from '@/components/ui/sidebar';
-import { Home, Users, Settings, BarChart3, BellRing } from 'lucide-react';
+import { Home, Users, Settings, BarChart3, BellRing, Bot } from 'lucide-react';
 import { Logo } from '@/components/icons';
 import { Header } from '@/components/header';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -25,6 +24,10 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import { Badge } from '@/components/ui/badge';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { ScrollArea } from '@/components/ui/scroll-area';
+import { Switch } from '@/components/ui/switch';
+import { Label } from '@/components/ui/label';
+import { Input } from '@/components/ui/input';
+import { Button } from '@/components/ui/button';
 
 interface AppUser {
     id: string;
@@ -37,6 +40,8 @@ const systemMetrics = {
     totalLogs: 1254,
     activeUsers: 23,
     alertCount: 42,
+    geminiApiCalls: 789,
+    functionInvocations: 1560,
 };
 
 export default function AdminDashboard() {
@@ -45,6 +50,12 @@ export default function AdminDashboard() {
   const [activeView, setActiveView] = useState('dashboard');
   const [allUsers, setAllUsers] = useState<AppUser[]>([]);
   const [isDataLoading, setIsDataLoading] = useState(true);
+  const [alertConfig, setAlertConfig] = useState({
+      aiAssistantEnabled: true,
+      heartRateMax: 120,
+      oxygenLevelMin: 90,
+  });
+
 
   useEffect(() => {
     if (!loading && (!user || userData?.role !== 'admin')) {
@@ -169,15 +180,92 @@ export default function AdminDashboard() {
                  </div>
             );
         case 'system-metrics':
+            return (
+                <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+                    <Card>
+                        <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
+                            <CardTitle className="text-sm font-medium">Total Vitals Logs</CardTitle>
+                            <BarChart3 className="h-4 w-4 text-muted-foreground" />
+                        </CardHeader>
+                        <CardContent>
+                            <div className="text-2xl font-bold">{systemMetrics.totalLogs}</div>
+                        </CardContent>
+                    </Card>
+                    <Card>
+                        <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
+                            <CardTitle className="text-sm font-medium">Active Users</CardTitle>
+                            <Users className="h-4 w-4 text-muted-foreground" />
+                        </CardHeader>
+                        <CardContent>
+                            <div className="text-2xl font-bold">{allUsers.length}</div>
+                        </CardContent>
+                    </Card>
+                    <Card>
+                         <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
+                            <CardTitle className="text-sm font-medium">Critical Alerts</CardTitle>
+                            <BellRing className="h-4 w-4 text-muted-foreground" />
+                        </CardHeader>
+                        <CardContent>
+                            <div className="text-2xl font-bold">{systemMetrics.alertCount}</div>
+                        </CardContent>
+                    </Card>
+                     <Card>
+                         <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
+                            <CardTitle className="text-sm font-medium">Gemini API Calls</CardTitle>
+                            <Bot className="h-4 w-4 text-muted-foreground" />
+                        </CardHeader>
+                        <CardContent>
+                            <div className="text-2xl font-bold">{systemMetrics.geminiApiCalls}</div>
+                            <p className="text-xs text-muted-foreground">in the last 24 hours</p>
+                        </CardContent>
+                    </Card>
+                     <Card>
+                         <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
+                            <CardTitle className="text-sm font-medium">Function Invocations</CardTitle>
+                            <Settings className="h-4 w-4 text-muted-foreground" />
+                        </CardHeader>
+                        <CardContent>
+                            <div className="text-2xl font-bold">{systemMetrics.functionInvocations}</div>
+                             <p className="text-xs text-muted-foreground">in the last 24 hours</p>
+                        </CardContent>
+                    </Card>
+                </div>
+            );
         case 'alerts-config':
             return (
                 <Card>
                     <CardHeader>
-                        <CardTitle>Coming Soon</CardTitle>
-                        <CardDescription>This feature is under development.</CardDescription>
+                        <CardTitle>Alerts Configuration</CardTitle>
+                        <CardDescription>Set thresholds for critical alerts and manage AI features.</CardDescription>
                     </CardHeader>
-                    <CardContent>
-                        <p>Stay tuned for updates!</p>
+                    <CardContent className="space-y-6">
+                       <div className="flex items-center justify-between space-x-2 rounded-lg border p-4">
+                           <div className="space-y-0.5">
+                               <Label htmlFor="ai-assistant-switch" className="text-base">AI Assistant</Label>
+                               <p className="text-sm text-muted-foreground">Enable or disable the patient-facing Gemini chatbot.</p>
+                           </div>
+                           <Switch
+                                id="ai-assistant-switch"
+                                checked={alertConfig.aiAssistantEnabled}
+                                onCheckedChange={(checked) => setAlertConfig(prev => ({...prev, aiAssistantEnabled: checked}))}
+                           />
+                       </div>
+                       <div className="space-y-4">
+                           <h3 className="text-lg font-medium">Alert Thresholds</h3>
+                           <div className="grid gap-4 md:grid-cols-2">
+                               <div>
+                                   <Label htmlFor="hr-max">Max Heart Rate (BPM)</Label>
+                                   <Input id="hr-max" type="number" value={alertConfig.heartRateMax} onChange={(e) => setAlertConfig(prev => ({...prev, heartRateMax: Number(e.target.value)}))} />
+                                   <p className="text-xs text-muted-foreground mt-1">Alert caregiver if heart rate exceeds this value.</p>
+                               </div>
+                               <div>
+                                   <Label htmlFor="o2-min">Min Oxygen Level (%)</Label>
+                                   <Input id="o2-min" type="number" value={alertConfig.oxygenLevelMin} onChange={(e) => setAlertConfig(prev => ({...prev, oxygenLevelMin: Number(e.target.value)}))} />
+                                   <p className="text-xs text-muted-foreground mt-1">Alert caregiver if O2 level drops below this value.</p>
+                               </div>
+                           </div>
+                       </div>
+                       <Button>Save Changes</Button>
                     </CardContent>
                 </Card>
             );
