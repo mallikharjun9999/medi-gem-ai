@@ -10,6 +10,7 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel";
+import Image from 'next/image';
 
 export default function LandingPage() {
   return (
@@ -39,8 +40,8 @@ export default function LandingPage() {
               <Carousel className="w-full max-w-lg mx-auto">
                 <CarouselContent>
                   <CarouselItem>
-                    <img
-                      src="https://placehold.co/600x400.png"
+                    <Image
+                      src="https://www.mindinventory.com/blog/wp-content/uploads/2020/09/chatbots-in-healthcare.webp"
                       width="600"
                       height="400"
                       alt="Hero Image 1"
@@ -49,8 +50,8 @@ export default function LandingPage() {
                     />
                   </CarouselItem>
                   <CarouselItem>
-                    <img
-                      src="https://placehold.co/600x400.png"
+                    <Image
+                      src="https://t4.ftcdn.net/jpg/02/18/92/81/360_F_218928168_okyiOqlFkPrjBho39i5ObPYj1l1m3k7i.jpg"
                       width="600"
                       height="400"
                       alt="Hero Image 2"
@@ -59,12 +60,32 @@ export default function LandingPage() {
                     />
                   </CarouselItem>
                   <CarouselItem>
-                    <img
-                      src="https://placehold.co/600x400.png"
+                    <Image
+                      src="https://thumbs.dreamstime.com/b/smartphone-remote-medical-care-vector-illustration-people-mobile-phone-healthcare-consultation-doctors-device-96655510.jpg"
                       width="600"
                       height="400"
                       alt="Hero Image 3"
                       data-ai-hint="vital signs monitoring"
+                      className="aspect-[3/2] overflow-hidden rounded-xl object-cover w-full"
+                    />
+                  </CarouselItem>
+                   <CarouselItem>
+                    <Image
+                      src="https://st4.depositphotos.com/1177973/22931/i/450/depositphotos_229313988-stock-photo-female-doctor-consulting-senior-patient.jpg"
+                      width="600"
+                      height="400"
+                      alt="Hero Image 4"
+                      data-ai-hint="doctor patient"
+                      className="aspect-[3/2] overflow-hidden rounded-xl object-cover w-full"
+                    />
+                  </CarouselItem>
+                   <CarouselItem>
+                    <Image
+                      src="https://photos.peopleimages.com/picture/202311/2956950-nurse-hands-home-and-blood-pressure-test-for-healthcare-service-support-and-caregiver-for-medical-monitor.-adn-worker-or-doctor-with-patient-arm-for-helping-of-diabetes-or-hypertension-exam-on-sofa-fit_400_400.jpg"
+                      width="600"
+                      height="400"
+                      alt="Hero Image 5"
+                      data-ai-hint="nurse patient blood pressure"
                       className="aspect-[3/2] overflow-hidden rounded-xl object-cover w-full"
                     />
                   </CarouselItem>
