@@ -22,6 +22,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Badge } from '@/components/ui/badge';
 import { VitalsHistoryChart } from '@/components/vitals-history-chart';
+import { PatientDetailsDialog } from '@/components/patient-details-dialog';
 
 
 const allPatients = [
@@ -44,6 +45,7 @@ export default function DoctorDashboard() {
   const { user, userData, loading, logout } = useAuth();
   const router = useRouter();
   const [activeView, setActiveView] = useState('dashboard');
+  const [selectedPatient, setSelectedPatient] = useState(null);
 
   useEffect(() => {
     if (!loading && (!user || userData?.role !== 'doctor')) {
@@ -54,6 +56,49 @@ export default function DoctorDashboard() {
   if (loading || !userData) {
     return <div className="flex h-screen items-center justify-center">Loading...</div>;
   }
+  
+  const handleViewDetails = (patient: any) => {
+    setSelectedPatient(patient);
+  };
+
+  const handleCloseDialog = () => {
+    setSelectedPatient(null);
+  };
+  
+  const renderPatientTable = (patients: any[]) => (
+    <Table>
+        <TableHeader>
+            <TableRow>
+            <TableHead>Patient Name</TableHead>
+            <TableHead>Last Checkup</TableHead>
+            <TableHead>Risk Level</TableHead>
+            <TableHead>Current Status</TableHead>
+            <TableHead>Actions</TableHead>
+            </TableRow>
+        </TableHeader>
+        <TableBody>
+            {patients.map((patient) => (
+            <TableRow key={patient.id}>
+                <TableCell className="font-medium">{patient.name}</TableCell>
+                <TableCell>{patient.lastCheckup}</TableCell>
+                <TableCell>
+                    <Badge variant={patient.risk === 'Low' ? 'outline' : patient.risk === 'Medium' ? 'secondary' : 'destructive'}>
+                        {patient.risk}
+                    </Badge>
+                </TableCell>
+                <TableCell>
+                    <Badge variant={patient.status === 'Normal' ? 'default' : 'destructive'}  className={patient.status === 'Normal' ? 'bg-accent text-accent-foreground' : ''}>
+                        {patient.status}
+                    </Badge>
+                </TableCell>
+                <TableCell>
+                    <PatientDetailsDialog patient={patient} doctorId={userData?.uid} />
+                </TableCell>
+            </TableRow>
+            ))}
+        </TableBody>
+    </Table>
+  );
 
   const renderContent = () => {
     switch(activeView) {
@@ -94,38 +139,7 @@ export default function DoctorDashboard() {
                                     <CardDescription>A list of recently active patients.</CardDescription>
                                 </CardHeader>
                                 <CardContent>
-                                <Table>
-                                    <TableHeader>
-                                        <TableRow>
-                                        <TableHead>Patient Name</TableHead>
-                                        <TableHead>Last Checkup</TableHead>
-                                        <TableHead>Risk Level</TableHead>
-                                        <TableHead>Current Status</TableHead>
-                                        <TableHead>Actions</TableHead>
-                                        </TableRow>
-                                    </TableHeader>
-                                    <TableBody>
-                                        {allPatients.slice(0, 5).map((patient) => (
-                                        <TableRow key={patient.id}>
-                                            <TableCell className="font-medium">{patient.name}</TableCell>
-                                            <TableCell>{patient.lastCheckup}</TableCell>
-                                            <TableCell>
-                                                <Badge variant={patient.risk === 'Low' ? 'outline' : patient.risk === 'Medium' ? 'secondary' : 'destructive'}>
-                                                    {patient.risk}
-                                                </Badge>
-                                            </TableCell>
-                                            <TableCell>
-                                                <Badge variant={patient.status === 'Normal' ? 'default' : 'destructive'}  className={patient.status === 'Normal' ? 'bg-accent text-accent-foreground' : ''}>
-                                                    {patient.status}
-                                                </Badge>
-                                            </TableCell>
-                                            <TableCell>
-                                                <button className="text-primary hover:underline">View Chart</button>
-                                            </TableCell>
-                                        </TableRow>
-                                        ))}
-                                    </TableBody>
-                                    </Table>
+                                {renderPatientTable(allPatients.slice(0, 5))}
                                 </CardContent>
                             </Card>
                         </div>
@@ -140,38 +154,7 @@ export default function DoctorDashboard() {
                         <CardDescription>A list of all patients in the system.</CardDescription>
                     </CardHeader>
                     <CardContent>
-                    <Table>
-                        <TableHeader>
-                            <TableRow>
-                            <TableHead>Patient Name</TableHead>
-                            <TableHead>Last Checkup</TableHead>
-                            <TableHead>Risk Level</TableHead>
-                            <TableHead>Current Status</TableHead>
-                            <TableHead>Actions</TableHead>
-                            </TableRow>
-                        </TableHeader>
-                        <TableBody>
-                            {allPatients.map((patient) => (
-                            <TableRow key={patient.id}>
-                                <TableCell className="font-medium">{patient.name}</TableCell>
-                                <TableCell>{patient.lastCheckup}</TableCell>
-                                <TableCell>
-                                    <Badge variant={patient.risk === 'Low' ? 'outline' : patient.risk === 'Medium' ? 'secondary' : 'destructive'}>
-                                        {patient.risk}
-                                    </Badge>
-                                </TableCell>
-                                <TableCell>
-                                    <Badge variant={patient.status === 'Normal' ? 'default' : 'destructive'}  className={patient.status === 'Normal' ? 'bg-accent text-accent-foreground' : ''}>
-                                        {patient.status}
-                                    </Badge>
-                                </TableCell>
-                                <TableCell>
-                                    <button className="text-primary hover:underline">View Chart</button>
-                                </TableCell>
-                            </TableRow>
-                            ))}
-                        </TableBody>
-                        </Table>
+                        {renderPatientTable(allPatients)}
                     </CardContent>
                 </Card>
             );
