@@ -1,7 +1,6 @@
 
 'use client';
 
-import React from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/hooks/use-auth';
 import { useEffect, useState } from 'react';
@@ -13,20 +12,17 @@ import {
   SidebarMenuItem,
   SidebarMenuButton,
   SidebarContent,
-  SidebarFooter,
   SidebarInset,
 } from '@/components/ui/sidebar';
-import { Home, Users, Bell, Settings } from 'lucide-react';
+import { Home, Users, Bell, FileText } from 'lucide-react';
 import { Logo } from '@/components/icons';
 import { Header } from '@/components/header';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Badge } from '@/components/ui/badge';
 import { db } from '@/lib/firebase';
-import { collection, query, where, onSnapshot, doc, getDoc, orderBy, limit } from 'firebase/firestore';
-import { VitalsHistoryChart } from '@/components/vitals-history-chart';
+import { collection, query, onSnapshot, orderBy, limit } from 'firebase/firestore';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
-import { FileText } from 'lucide-react';
 
 interface Patient {
   id: string;
@@ -88,58 +84,68 @@ export default function CaregiverDashboard() {
     return <div className="flex h-screen items-center justify-center">Loading...</div>;
   }
   
+  const renderPatientList = () => (
+      <Card>
+        <CardHeader>
+            <CardTitle>Assigned Patients</CardTitle>
+            <CardDescription>Monitor the real-time vitals and status of your patients.</CardDescription>
+        </CardHeader>
+        <CardContent>
+            <Table>
+            <TableHeader>
+                <TableRow>
+                <TableHead>Patient Name</TableHead>
+                <TableHead>Last Vital Reading</TableHead>
+                <TableHead>Time</TableHead>
+                <TableHead>Status</TableHead>
+                </TableRow>
+            </TableHeader>
+            <TableBody>
+                {assignedPatients.map((patient) => (
+                <>
+                    <TableRow key={patient.id}>
+                        <TableCell className="font-medium">{patient.name}</TableCell>
+                        <TableCell>{patient.lastVital}</TableCell>
+                        <TableCell>{patient.lastVitalTime}</TableCell>
+                        <TableCell>
+                        <Badge variant={patient.status === 'Normal' ? 'default' : patient.status === 'Elevated' ? 'secondary' : 'destructive'} className={patient.status === 'Normal' ? 'bg-accent text-accent-foreground' : ''}>
+                            {patient.status}
+                        </Badge>
+                        </TableCell>
+                    </TableRow>
+                    {patient.doctorsNote && (
+                         <TableRow key={`${patient.id}-note`}>
+                            <TableCell colSpan={4}>
+                                 <Alert>
+                                    <FileText className="h-4 w-4" />
+                                    <AlertTitle>Doctor's Note ({patient.noteTimestamp?.toLocaleDateString()})</AlertTitle>
+                                    <AlertDescription>
+                                        {patient.doctorsNote}
+                                    </AlertDescription>
+                                </Alert>
+                            </TableCell>
+                         </TableRow>
+                    )}
+                 </>
+                ))}
+            </TableBody>
+            </Table>
+        </CardContent>
+    </Card>
+  )
+
   const renderContent = () => {
       switch(activeView) {
           case 'dashboard':
             return (
                 <div className="space-y-6">
-                <Card>
-                    <CardHeader>
-                        <CardTitle>Assigned Patients</CardTitle>
-                        <CardDescription>Monitor the real-time vitals and status of your patients.</CardDescription>
-                    </CardHeader>
-                    <CardContent>
-                        <Table>
-                        <TableHeader>
-                            <TableRow>
-                            <TableHead>Patient Name</TableHead>
-                            <TableHead>Last Vital Reading</TableHead>
-                            <TableHead>Time</TableHead>
-                            <TableHead>Status</TableHead>
-                            </TableRow>
-                        </TableHeader>
-                        <TableBody>
-                            {assignedPatients.map((patient) => (
-                            <React.Fragment key={patient.id}>
-                                <TableRow>
-                                    <TableCell className="font-medium">{patient.name}</TableCell>
-                                    <TableCell>{patient.lastVital}</TableCell>
-                                    <TableCell>{patient.lastVitalTime}</TableCell>
-                                    <TableCell>
-                                    <Badge variant={patient.status === 'Normal' ? 'default' : patient.status === 'Elevated' ? 'secondary' : 'destructive'} className={patient.status === 'Normal' ? 'bg-accent text-accent-foreground' : ''}>
-                                        {patient.status}
-                                    </Badge>
-                                    </TableCell>
-                                </TableRow>
-                                {patient.doctorsNote && (
-                                     <TableRow>
-                                        <TableCell colSpan={4}>
-                                             <Alert>
-                                                <FileText className="h-4 w-4" />
-                                                <AlertTitle>Doctor's Note ({patient.noteTimestamp?.toLocaleDateString()})</AlertTitle>
-                                                <AlertDescription>
-                                                    {patient.doctorsNote}
-                                                </AlertDescription>
-                                            </Alert>
-                                        </TableCell>
-                                     </TableRow>
-                                )}
-                             </React.Fragment>
-                            ))}
-                        </TableBody>
-                        </Table>
-                    </CardContent>
-                </Card>
+                  {renderPatientList()}
+                </div>
+            );
+        case 'patients':
+            return (
+                <div className="space-y-6">
+                  {renderPatientList()}
                 </div>
             );
         case 'alerts':
@@ -194,7 +200,7 @@ export default function CaregiverDashboard() {
               </SidebarMenuButton>
             </SidebarMenuItem>
             <SidebarMenuItem>
-              <SidebarMenuButton onClick={() => setActiveView('dashboard')} isActive={false}>
+              <SidebarMenuButton onClick={() => setActiveView('patients')} isActive={activeView === 'patients'}>
                 <Users />
                 Patients
               </SidebarMenuButton>
