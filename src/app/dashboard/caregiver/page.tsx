@@ -63,27 +63,22 @@ export default function CaregiverDashboard() {
           { id: 'patient3', name: 'Bob Johnson', lastVital: '118/76 mmHg', lastVitalTime: '1h ago', status: 'Normal' },
           { id: 'patient4', name: 'Alice Williams', lastVital: '140/92 mmHg', lastVitalTime: '2h ago', status: 'High' },
         ];
-        setAssignedPatients(initialPatients);
-
-        const unsubscribes = initialPatients.map((patient, index) => {
-            const notesQuery = query(collection(db, 'users', patient.id, 'notes'), orderBy('timestamp', 'desc'), limit(1));
+        
+        const patientSubscriptions = initialPatients.map(p => {
+            const notesQuery = query(collection(db, 'users', p.id, 'notes'), orderBy('timestamp', 'desc'), limit(1));
             return onSnapshot(notesQuery, (snapshot) => {
-                if (!snapshot.empty) {
-                    const latestNote = snapshot.docs[0].data();
-                    setAssignedPatients(prevPatients => {
-                        const newPatients = [...prevPatients];
-                        newPatients[index] = {
-                            ...newPatients[index],
-                            doctorsNote: latestNote.note,
-                            noteTimestamp: latestNote.timestamp.toDate()
-                        };
-                        return newPatients;
-                    });
-                }
+                const latestNote = snapshot.docs[0]?.data();
+                setAssignedPatients(prev => prev.map(patient => 
+                    patient.id === p.id 
+                    ? { ...patient, doctorsNote: latestNote?.note, noteTimestamp: latestNote?.timestamp.toDate() } 
+                    : patient
+                ));
             });
         });
+        
+        setAssignedPatients(initialPatients);
 
-        return () => unsubscribes.forEach(unsub => unsub());
+        return () => patientSubscriptions.forEach(unsub => unsub());
     }
   }, [user, userData]);
 
