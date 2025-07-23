@@ -15,7 +15,7 @@ import {
   SidebarFooter,
   SidebarInset,
 } from '@/components/ui/sidebar';
-import { Home, Stethoscope, FileText, Download } from 'lucide-react';
+import { Home, Stethoscope, FileText, Eye } from 'lucide-react';
 import { Logo } from '@/components/icons';
 import { Header } from '@/components/header';
 import { VitalsHistoryChart } from '@/components/vitals-history-chart';
@@ -128,7 +128,7 @@ export default function PatientDashboard() {
                 <Card>
                     <CardHeader>
                         <CardTitle>Your Reports</CardTitle>
-                        <CardDescription>View and download your health reports.</CardDescription>
+                        <CardDescription>View your health reports.</CardDescription>
                     </CardHeader>
                     <CardContent>
                         <Table>
@@ -146,8 +146,8 @@ export default function PatientDashboard() {
                                         <TableCell>{report.date}</TableCell>
                                         <TableCell className="text-right">
                                             <Button variant="outline" size="sm">
-                                                <Download className="mr-2 h-4 w-4" />
-                                                Download
+                                                <Eye className="mr-2 h-4 w-4" />
+                                                View
                                             </Button>
                                         </TableCell>
                                     </TableRow>
