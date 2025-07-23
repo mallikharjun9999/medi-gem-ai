@@ -17,7 +17,8 @@ export function Header() {
     router.push('/');
   }
 
-  const handleHomeClick = () => {
+  const handleHomeClickAndLogout = async () => {
+    await logout();
     router.push('/');
   }
 
@@ -27,7 +28,7 @@ export function Header() {
       
       <div className="ml-auto flex items-center gap-2">
         {userData?.role === 'patient' && <LogVitalsDialog />}
-        <Button variant="outline" size="icon" className="h-8 w-8" onClick={handleHomeClick}>
+        <Button variant="outline" size="icon" className="h-8 w-8" onClick={handleHomeClickAndLogout}>
           <Home className="h-4 w-4" />
           <span className="sr-only">Home</span>
         </Button>
