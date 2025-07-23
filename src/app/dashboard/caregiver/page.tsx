@@ -23,6 +23,7 @@ import { Badge } from '@/components/ui/badge';
 import { db } from '@/lib/firebase';
 import { collection, query, onSnapshot, orderBy, limit } from 'firebase/firestore';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
+import React from 'react';
 
 interface Patient {
   id: string;
@@ -102,8 +103,8 @@ export default function CaregiverDashboard() {
             </TableHeader>
             <TableBody>
                 {assignedPatients.map((patient) => (
-                <>
-                    <TableRow key={patient.id}>
+                <React.Fragment key={patient.id}>
+                    <TableRow>
                         <TableCell className="font-medium">{patient.name}</TableCell>
                         <TableCell>{patient.lastVital}</TableCell>
                         <TableCell>{patient.lastVitalTime}</TableCell>
@@ -126,7 +127,7 @@ export default function CaregiverDashboard() {
                             </TableCell>
                          </TableRow>
                     )}
-                 </>
+                 </React.Fragment>
                 ))}
             </TableBody>
             </Table>
@@ -137,12 +138,6 @@ export default function CaregiverDashboard() {
   const renderContent = () => {
       switch(activeView) {
           case 'dashboard':
-            return (
-                <div className="space-y-6">
-                  {renderPatientList()}
-                </div>
-            );
-        case 'patients':
             return (
                 <div className="space-y-6">
                   {renderPatientList()}
@@ -197,12 +192,6 @@ export default function CaregiverDashboard() {
               <SidebarMenuButton onClick={() => setActiveView('dashboard')} isActive={activeView === 'dashboard'}>
                 <Home />
                 Dashboard
-              </SidebarMenuButton>
-            </SidebarMenuItem>
-            <SidebarMenuItem>
-              <SidebarMenuButton onClick={() => setActiveView('patients')} isActive={activeView === 'patients'}>
-                <Users />
-                Patients
               </SidebarMenuButton>
             </SidebarMenuItem>
              <SidebarMenuItem>
