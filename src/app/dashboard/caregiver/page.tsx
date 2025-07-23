@@ -1,7 +1,7 @@
 
 'use client';
 
-import { useRouter } from 'next/navigation';
+import React, { useRouter } from 'next/navigation';
 import { useAuth } from '@/hooks/use-auth';
 import { useEffect, useState } from 'react';
 import {
@@ -22,7 +22,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Badge } from '@/components/ui/badge';
 import { db } from '@/lib/firebase';
-import { collection, query, where, onSnapshot, doc, getDoc } from 'firebase/firestore';
+import { collection, query, where, onSnapshot, doc, getDoc, orderBy, limit } from 'firebase/firestore';
 import { VitalsHistoryChart } from '@/components/vitals-history-chart';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { FileText } from 'lucide-react';
@@ -55,54 +55,35 @@ export default function CaregiverDashboard() {
     }
   }, [user, userData, loading, router]);
   
-  useEffect(() => {
+   useEffect(() => {
     if (user && userData?.role === 'caregiver') {
-        // Mocking assigned patients for now. In a real app, this would come from a 'assignments' collection.
-        const mockPatientIds = ['patient1', 'patient2', 'patient3', 'patient4'];
-        
-        const patientData: Patient[] = [
+        const initialPatients: Patient[] = [
           { id: 'patient1', name: 'John Doe', lastVital: '120/80 mmHg', lastVitalTime: '5m ago', status: 'Normal' },
           { id: 'patient2', name: 'Jane Smith', lastVital: '135/88 mmHg', lastVitalTime: '10m ago', status: 'Elevated' },
           { id: 'patient3', name: 'Bob Johnson', lastVital: '118/76 mmHg', lastVitalTime: '1h ago', status: 'Normal' },
           { id: 'patient4', name: 'Alice Williams', lastVital: '140/92 mmHg', lastVitalTime: '2h ago', status: 'High' },
         ];
-        
-        const fetchNotes = async () => {
-            const patientsWithNotes = await Promise.all(patientData.map(async (p) => {
-                const notesQuery = query(collection(db, 'users', p.id, 'notes'));
-                let latestNote: any = null;
-                const notesSnapshot = await onSnapshot(notesQuery, (snapshot) => {
-                     snapshot.docs.forEach(doc => {
-                        const note = doc.data();
-                        if (!latestNote || note.timestamp.toDate() > latestNote.timestamp.toDate()) {
-                            latestNote = note;
-                        }
+        setAssignedPatients(initialPatients);
+
+        const unsubscribes = initialPatients.map((patient, index) => {
+            const notesQuery = query(collection(db, 'users', patient.id, 'notes'), orderBy('timestamp', 'desc'), limit(1));
+            return onSnapshot(notesQuery, (snapshot) => {
+                if (!snapshot.empty) {
+                    const latestNote = snapshot.docs[0].data();
+                    setAssignedPatients(prevPatients => {
+                        const newPatients = [...prevPatients];
+                        newPatients[index] = {
+                            ...newPatients[index],
+                            doctorsNote: latestNote.note,
+                            noteTimestamp: latestNote.timestamp.toDate()
+                        };
+                        return newPatients;
                     });
-
-                    if(latestNote) {
-                        const patientIndex = assignedPatients.findIndex(patient => patient.id === p.id);
-                        if (patientIndex > -1) {
-                             const updatedPatients = [...assignedPatients];
-                             updatedPatients[patientIndex] = {
-                                 ...updatedPatients[patientIndex],
-                                 doctorsNote: latestNote.note,
-                                 noteTimestamp: latestNote.timestamp.toDate()
-                             };
-                            setAssignedPatients(updatedPatients);
-                        }
-                    }
-                });
-
-                return {
-                    ...p,
-                    doctorsNote: latestNote?.note,
-                    noteTimestamp: latestNote?.timestamp.toDate()
                 }
-            }));
-            setAssignedPatients(patientsWithNotes);
-        }
-        
-        fetchNotes();
+            });
+        });
+
+        return () => unsubscribes.forEach(unsub => unsub());
     }
   }, [user, userData]);
 
