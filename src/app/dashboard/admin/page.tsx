@@ -288,7 +288,7 @@ export default function AdminDashboard() {
             <SidebarMenuItem>
               <SidebarMenuButton onClick={() => setActiveView('dashboard')} isActive={activeView === 'dashboard'}>
                 <Home />
-                Dashboard
+                Admin Dashboard
               </SidebarMenuButton>
             </SidebarMenuItem>
             <SidebarMenuItem>
