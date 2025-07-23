@@ -3,6 +3,13 @@ import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import { MainNav } from '@/components/main-nav';
 import { HeartPulse, BotMessageSquare, Stethoscope } from 'lucide-react';
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from "@/components/ui/carousel";
 
 export default function LandingPage() {
   return (
@@ -29,14 +36,42 @@ export default function LandingPage() {
                   </Button>
                 </div>
               </div>
-              <img
-                src="https://placehold.co/600x400.png"
-                width="600"
-                height="400"
-                alt="Hero"
-                data-ai-hint="health technology"
-                className="mx-auto aspect-[3/2] overflow-hidden rounded-xl object-cover sm:w-full"
-              />
+              <Carousel className="w-full max-w-lg mx-auto">
+                <CarouselContent>
+                  <CarouselItem>
+                    <img
+                      src="https://placehold.co/600x400.png"
+                      width="600"
+                      height="400"
+                      alt="Hero Image 1"
+                      data-ai-hint="health technology"
+                      className="aspect-[3/2] overflow-hidden rounded-xl object-cover w-full"
+                    />
+                  </CarouselItem>
+                  <CarouselItem>
+                    <img
+                      src="https://placehold.co/600x400.png"
+                      width="600"
+                      height="400"
+                      alt="Hero Image 2"
+                      data-ai-hint="patient doctor consultation"
+                      className="aspect-[3/2] overflow-hidden rounded-xl object-cover w-full"
+                    />
+                  </CarouselItem>
+                  <CarouselItem>
+                    <img
+                      src="https://placehold.co/600x400.png"
+                      width="600"
+                      height="400"
+                      alt="Hero Image 3"
+                      data-ai-hint="vital signs monitoring"
+                      className="aspect-[3/2] overflow-hidden rounded-xl object-cover w-full"
+                    />
+                  </CarouselItem>
+                </CarouselContent>
+                <CarouselPrevious />
+                <CarouselNext />
+              </Carousel>
             </div>
           </div>
         </section>
