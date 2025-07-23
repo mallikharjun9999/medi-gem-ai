@@ -15,7 +15,7 @@ import {
   SidebarFooter,
   SidebarInset,
 } from '@/components/ui/sidebar';
-import { Home, Stethoscope, FileText, Settings } from 'lucide-react';
+import { Home, Stethoscope, FileText, Download } from 'lucide-react';
 import { Logo } from '@/components/icons';
 import { Header } from '@/components/header';
 import { VitalsHistoryChart } from '@/components/vitals-history-chart';
@@ -24,6 +24,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Badge } from '@/components/ui/badge';
 import { LogVitalsDialog } from '@/components/log-vitals-dialog';
+import { Button } from '@/components/ui/button';
 
 const recentVitals = [
   { date: '2024-07-29', heartRate: 75, bp: '120/80', temp: 98.6, status: 'Normal' },
@@ -31,6 +32,12 @@ const recentVitals = [
   { date: '2024-07-27', heartRate: 90, bp: '130/85', temp: 99.5, status: 'Elevated' },
   { date: '2024-07-26', heartRate: 72, bp: '118/78', temp: 98.4, status: 'Normal' },
 ];
+
+const healthReports = [
+    { id: 'report-1', name: 'Monthly Vitals Summary - July 2024', date: '2024-08-01' },
+    { id: 'report-2', name: 'Quarterly Health Review (Q2 2024)', date: '2024-07-05' },
+    { id: 'report-3', name: 'Full Blood Panel Results', date: '2024-06-15' },
+]
 
 export default function PatientDashboard() {
   const { user, userData, loading } = useAuth();
@@ -124,7 +131,29 @@ export default function PatientDashboard() {
                         <CardDescription>View and download your health reports.</CardDescription>
                     </CardHeader>
                     <CardContent>
-                        <p>Reports functionality coming soon.</p>
+                        <Table>
+                            <TableHeader>
+                                <TableRow>
+                                    <TableHead>Report Name</TableHead>
+                                    <TableHead>Date</TableHead>
+                                    <TableHead className="text-right">Actions</TableHead>
+                                </TableRow>
+                            </TableHeader>
+                            <TableBody>
+                                {healthReports.map((report) => (
+                                    <TableRow key={report.id}>
+                                        <TableCell className="font-medium">{report.name}</TableCell>
+                                        <TableCell>{report.date}</TableCell>
+                                        <TableCell className="text-right">
+                                            <Button variant="outline" size="sm">
+                                                <Download className="mr-2 h-4 w-4" />
+                                                Download
+                                            </Button>
+                                        </TableCell>
+                                    </TableRow>
+                                ))}
+                            </TableBody>
+                        </Table>
                     </CardContent>
                 </Card>
             );
