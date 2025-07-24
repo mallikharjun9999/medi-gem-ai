@@ -230,18 +230,18 @@ export default function LandingPage() {
         <section className="w-full py-12 md:py-24 lg:py-32 bg-transparent">
           <div className="container px-4 md:px-6">
             <div className="grid gap-12 lg:grid-cols-2 lg:gap-16">
-              <div>
-                <div className="space-y-2 mb-8">
-                  <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl">Contact Us</h2>
+              <div className="space-y-4">
+                <div className="space-y-2">
+                  <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl">Contact Us</h2>
                   <p className="max-w-[600px] text-muted-foreground md:text-xl/relaxed">
                     Have a question or need support? Fill out the form and we'll get back to you.
                   </p>
                 </div>
                 <ContactForm />
               </div>
-               <div>
-                 <div className="space-y-2 mb-8">
-                   <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl">Our Location</h2>
+               <div className="space-y-4">
+                 <div className="space-y-2">
+                   <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl">Our Location</h2>
                    <p className="max-w-[600px] text-muted-foreground md:text-xl/relaxed">
                      Find us at our headquarters in the heart of the city.
                    </p>
