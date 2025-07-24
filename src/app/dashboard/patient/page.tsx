@@ -58,7 +58,7 @@ export default function PatientDashboard() {
     switch (activeView) {
       case 'dashboard':
         return (
-            <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+            <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 animate-fade-in-up">
              <div className="lg:col-span-2">
                 <Card>
                     <CardHeader>
@@ -92,7 +92,7 @@ export default function PatientDashboard() {
                             </TableHeader>
                             <TableBody>
                                 {recentVitals.map((vital) => (
-                                <TableRow key={vital.date}>
+                                <TableRow key={vital.date} className="animate-fade-in">
                                     <TableCell>{vital.date}</TableCell>
                                     <TableCell>{vital.heartRate} BPM</TableCell>
                                     <TableCell>{vital.bp} mmHg</TableCell>
@@ -111,7 +111,7 @@ export default function PatientDashboard() {
         );
         case 'vitals':
             return (
-                <Card>
+                <Card className="animate-fade-in-up">
                     <CardHeader>
                         <CardTitle>Log Your Vitals</CardTitle>
                         <CardDescription>Enter your current vitals and symptoms.</CardDescription>
@@ -125,7 +125,7 @@ export default function PatientDashboard() {
             );
         case 'reports':
             return (
-                <Card>
+                <Card className="animate-fade-in-up">
                     <CardHeader>
                         <CardTitle>Your Reports</CardTitle>
                         <CardDescription>View your health reports.</CardDescription>
@@ -141,7 +141,7 @@ export default function PatientDashboard() {
                             </TableHeader>
                             <TableBody>
                                 {healthReports.map((report) => (
-                                    <TableRow key={report.id}>
+                                    <TableRow key={report.id} className="animate-fade-in">
                                         <TableCell className="font-medium">{report.name}</TableCell>
                                         <TableCell>{report.date}</TableCell>
                                         <TableCell className="text-right">

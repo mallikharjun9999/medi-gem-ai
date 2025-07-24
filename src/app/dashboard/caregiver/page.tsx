@@ -14,7 +14,7 @@ import {
   SidebarContent,
   SidebarInset,
 } from '@/components/ui/sidebar';
-import { Home, Users, Bell, FileText } from 'lucide-react';
+import { Home, Bell } from 'lucide-react';
 import { Logo } from '@/components/icons';
 import { Header } from '@/components/header';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -24,6 +24,7 @@ import { db } from '@/lib/firebase';
 import { collection, query, onSnapshot, orderBy, limit } from 'firebase/firestore';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import React from 'react';
+import { FileText } from 'lucide-react';
 
 interface Patient {
   id: string;
@@ -86,7 +87,7 @@ export default function CaregiverDashboard() {
   }
   
   const renderPatientList = () => (
-      <Card>
+      <Card className="animate-fade-in-up">
         <CardHeader>
             <CardTitle>Assigned Patients</CardTitle>
             <CardDescription>Monitor the real-time vitals and status of your patients.</CardDescription>
@@ -145,7 +146,7 @@ export default function CaregiverDashboard() {
             );
         case 'alerts':
             return (
-                <Card>
+                <Card className="animate-fade-in-up">
                     <CardHeader>
                         <CardTitle>Recent Alerts</CardTitle>
                         <CardDescription>Critical alerts from your assigned patients.</CardDescription>
