@@ -78,7 +78,7 @@ export default function DoctorDashboard() {
         </TableHeader>
         <TableBody>
             {patients.map((patient) => (
-            <TableRow key={patient.id} className="animate-fade-in">
+            <TableRow key={patient.id}>
                 <TableCell className="font-medium">{patient.name}</TableCell>
                 <TableCell>{patient.lastCheckup}</TableCell>
                 <TableCell>
@@ -104,7 +104,7 @@ export default function DoctorDashboard() {
     switch(activeView) {
         case 'dashboard':
             return (
-                <div className="grid gap-6 animate-fade-in-up">
+                <div className="grid gap-6">
                      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-1">
                         <div className="lg:col-span-1">
                             <Card>
@@ -148,7 +148,7 @@ export default function DoctorDashboard() {
             );
         case 'all-patients':
             return (
-                 <Card className="animate-fade-in-up">
+                 <Card>
                     <CardHeader>
                         <CardTitle>All Patients</CardTitle>
                         <CardDescription>A list of all patients in the system.</CardDescription>
@@ -160,7 +160,7 @@ export default function DoctorDashboard() {
             );
         case 'analytics':
              return (
-                <Card className="animate-fade-in-up">
+                <Card>
                     <CardHeader>
                         <CardTitle>Patient Vitals Analytics</CardTitle>
                         <CardDescription>Overview of patient vitals across the population.</CardDescription>

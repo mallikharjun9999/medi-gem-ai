@@ -144,7 +144,7 @@ export default function AdminDashboard() {
       switch(activeView) {
         case 'user-management':
             return (
-                 <div className="space-y-6 animate-fade-in-up">
+                 <div className="space-y-6">
                     {isDataLoading ? (
                         <p>Loading users...</p>
                     ) : (
@@ -159,7 +159,7 @@ export default function AdminDashboard() {
             );
         case 'system-metrics':
             return (
-                <div className="grid gap-6 animate-fade-in-up">
+                <div className="grid gap-6">
                     <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
                         <Card>
                             <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
@@ -224,7 +224,7 @@ export default function AdminDashboard() {
             );
         case 'alerts-config':
             return (
-                <Card className="animate-fade-in-up">
+                <Card>
                     <CardHeader>
                         <CardTitle>Alerts Configuration</CardTitle>
                         <CardDescription>Set thresholds for critical alerts and manage AI features.</CardDescription>

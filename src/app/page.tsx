@@ -58,7 +58,6 @@ export default function LandingPage() {
 
         const sections = document.querySelectorAll('section');
         sections.forEach((section) => {
-            section.classList.add('opacity-0');
             observer.observe(section);
         });
 
@@ -85,7 +84,7 @@ export default function LandingPage() {
     <div className="flex flex-col min-h-screen">
       <MainNav />
       <main className="flex-1">
-        <section className="w-full py-12 md:py-24 lg:py-32 flex items-center justify-center">
+        <section className="w-full py-12 md:py-24 lg:py-32 flex items-center justify-center opacity-0">
           <div className="container px-4 md:px-6">
             <div className="grid gap-6 lg:grid-cols-[1fr_400px] lg:gap-12 xl:grid-cols-[1fr_600px] items-center">
               <div className="flex flex-col justify-center space-y-4">
@@ -169,7 +168,7 @@ export default function LandingPage() {
             </div>
           </div>
         </section>
-        <section className="w-full py-12 md:py-24 lg:py-32 bg-transparent">
+        <section className="w-full py-12 md:py-24 lg:py-32 bg-transparent opacity-0">
             <div className="container px-4 md:px-6">
                  <div className="flex flex-col items-center justify-center space-y-4 text-center">
                     <div className="space-y-2">
@@ -204,7 +203,7 @@ export default function LandingPage() {
                 </div>
             </div>
         </section>
-        <section className="w-full py-12 md:py-24 lg:py-32 bg-transparent">
+        <section className="w-full py-12 md:py-24 lg:py-32 bg-transparent opacity-0">
           <div className="container px-4 md:px-6 text-center">
             <div className="flex flex-col items-center justify-center space-y-4">
               <div className="space-y-2">
@@ -223,7 +222,7 @@ export default function LandingPage() {
             </div>
           </div>
         </section>
-        <section className="w-full py-12 md:py-24 lg:py-32 bg-transparent">
+        <section className="w-full py-12 md:py-24 lg:py-32 bg-transparent opacity-0">
           <div className="container px-4 md:px-6">
             <div className="flex flex-col items-center justify-center space-y-4 text-center">
               <div className="space-y-2">
@@ -264,7 +263,7 @@ export default function LandingPage() {
           </div>
         </section>
 
-        <section className="w-full py-12 md:py-24 lg:py-32 bg-transparent">
+        <section className="w-full py-12 md:py-24 lg:py-32 bg-transparent opacity-0">
           <div className="container px-4 md:px-6">
             <div className="grid gap-12 lg:grid-cols-2 lg:gap-16">
               <div>

@@ -87,7 +87,7 @@ export default function CaregiverDashboard() {
   }
   
   const renderPatientList = () => (
-      <Card className="animate-fade-in-up">
+      <Card>
         <CardHeader>
             <CardTitle>Assigned Patients</CardTitle>
             <CardDescription>Monitor the real-time vitals and status of your patients.</CardDescription>
@@ -146,7 +146,7 @@ export default function CaregiverDashboard() {
             );
         case 'alerts':
             return (
-                <Card className="animate-fade-in-up">
+                <Card>
                     <CardHeader>
                         <CardTitle>Recent Alerts</CardTitle>
                         <CardDescription>Critical alerts from your assigned patients.</CardDescription>
