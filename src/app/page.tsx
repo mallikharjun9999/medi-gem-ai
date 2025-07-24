@@ -15,6 +15,12 @@ import {
 import Image from 'next/image';
 import Autoplay from "embla-carousel-autoplay";
 import React from 'react';
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion"
 
 export default function LandingPage() {
     const plugin = React.useRef(
@@ -143,6 +149,65 @@ export default function LandingPage() {
                     </div>
                 </div>
             </div>
+        </section>
+        <section className="w-full py-12 md:py-24 lg:py-32 bg-transparent animate-fade-in">
+          <div className="container px-4 md:px-6 text-center">
+            <div className="flex flex-col items-center justify-center space-y-4">
+              <div className="space-y-2">
+                <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl">About MediGem</h2>
+                <p className="max-w-[900px] text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
+                  MediGem is revolutionizing personal health management by bringing the power of artificial intelligence directly to your fingertips. Our mission is to empower you to take a proactive role in your health journey. By providing intuitive tools for vitals tracking, instant AI-driven insights, and seamless communication with healthcare professionals, we are making healthcare more accessible, personalized, and preventative.
+                </p>
+              </div>
+              <div className="flex flex-col gap-2 min-[400px]:flex-row">
+                  <Button asChild size="lg">
+                    <Link href="/login">
+                      Get Started
+                    </Link>
+                  </Button>
+                </div>
+            </div>
+          </div>
+        </section>
+        <section className="w-full py-12 md:py-24 lg:py-32 bg-transparent animate-fade-in">
+          <div className="container px-4 md:px-6">
+            <div className="flex flex-col items-center justify-center space-y-4 text-center">
+              <div className="space-y-2">
+                <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl">Frequently Asked Questions</h2>
+                <p className="max-w-[900px] text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
+                  Have questions? We've got answers. Here are some of the most common questions we get.
+                </p>
+              </div>
+            </div>
+            <div className="mx-auto max-w-3xl mt-12">
+              <Accordion type="single" collapsible className="w-full">
+                <AccordionItem value="item-1">
+                  <AccordionTrigger>Is MediGem a replacement for my doctor?</AccordionTrigger>
+                  <AccordionContent className="text-muted-foreground">
+                    No. MediGem is a tool to help you monitor your health and provide general information. It is not a substitute for professional medical advice, diagnosis, or treatment. Always seek the advice of your physician or other qualified health provider with any questions you may have regarding a medical condition.
+                  </AccordionContent>
+                </AccordionItem>
+                <AccordionItem value="item-2">
+                  <AccordionTrigger>How is my data protected?</AccordionTrigger>
+                  <AccordionContent className="text-muted-foreground">
+                    We take your privacy and data security very seriously. All your data is encrypted both in transit and at rest. We use industry-standard security protocols to ensure your personal health information is kept safe and confidential. You control who can see your data.
+                  </AccordionContent>
+                </AccordionItem>
+                <AccordionItem value="item-3">
+                  <AccordionTrigger>Who can use MediGem?</AccordionTrigger>
+                  <AccordionContent className="text-muted-foreground">
+                    MediGem is designed for everyone. Patients can track their vitals and symptoms, caregivers can monitor their loved ones' health, and doctors can get a holistic view of their patients' well-being between appointments.
+                  </AccordionContent>
+                </AccordionItem>
+                 <AccordionItem value="item-4">
+                  <AccordionTrigger>What kind of AI does MediGem use?</AccordionTrigger>
+                  <AccordionContent className="text-muted-foreground">
+                    Our AI Health Assistant is powered by Google's Gemini models. This allows us to provide helpful, conversational answers to your general health questions. The AI does not provide medical advice but can help you understand health topics better.
+                  </AccordionContent>
+                </AccordionItem>
+              </Accordion>
+            </div>
+          </div>
         </section>
       </main>
       <footer className="flex flex-col gap-2 sm:flex-row py-6 w-full shrink-0 items-center px-4 md:px-6 border-t">
