@@ -28,6 +28,7 @@ import { Switch } from '@/components/ui/switch';
 import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
+import { SystemMetricsChart } from '@/components/system-metrics-chart';
 
 interface AppUser {
     id: string;
@@ -158,52 +159,65 @@ export default function AdminDashboard() {
             );
         case 'system-metrics':
             return (
-                <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 animate-fade-in-up">
-                    <Card>
-                        <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
-                            <CardTitle className="text-sm font-medium">Total Vitals Logs</CardTitle>
-                            <BarChart3 className="h-4 w-4 text-muted-foreground" />
-                        </CardHeader>
-                        <CardContent>
-                            <div className="text-2xl font-bold">{systemMetrics.totalLogs}</div>
-                        </CardContent>
-                    </Card>
-                    <Card>
-                        <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
-                            <CardTitle className="text-sm font-medium">Active Users</CardTitle>
-                            <Users className="h-4 w-4 text-muted-foreground" />
-                        </CardHeader>
-                        <CardContent>
-                            <div className="text-2xl font-bold">{allUsers.length}</div>
-                        </CardContent>
-                    </Card>
-                    <Card>
-                         <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
-                            <CardTitle className="text-sm font-medium">Critical Alerts</CardTitle>
-                            <BellRing className="h-4 w-4 text-muted-foreground" />
-                        </CardHeader>
-                        <CardContent>
-                            <div className="text-2xl font-bold">{systemMetrics.alertCount}</div>
-                        </CardContent>
-                    </Card>
+                <div className="grid gap-6 animate-fade-in-up">
+                    <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+                        <Card>
+                            <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
+                                <CardTitle className="text-sm font-medium">Total Vitals Logs</CardTitle>
+                                <BarChart3 className="h-4 w-4 text-muted-foreground" />
+                            </CardHeader>
+                            <CardContent>
+                                <div className="text-2xl font-bold">{systemMetrics.totalLogs}</div>
+                            </CardContent>
+                        </Card>
+                        <Card>
+                            <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
+                                <CardTitle className="text-sm font-medium">Active Users</CardTitle>
+                                <Users className="h-4 w-4 text-muted-foreground" />
+                            </CardHeader>
+                            <CardContent>
+                                <div className="text-2xl font-bold">{allUsers.length}</div>
+                            </CardContent>
+                        </Card>
+                        <Card>
+                            <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
+                                <CardTitle className="text-sm font-medium">Critical Alerts</CardTitle>
+                                <BellRing className="h-4 w-4 text-muted-foreground" />
+                            </CardHeader>
+                            <CardContent>
+                                <div className="text-2xl font-bold">{systemMetrics.alertCount}</div>
+                            </CardContent>
+                        </Card>
+                        <Card>
+                            <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
+                                <CardTitle className="text-sm font-medium">Gemini API Calls</CardTitle>
+                                <Bot className="h-4 w-4 text-muted-foreground" />
+                            </CardHeader>
+                            <CardContent>
+                                <div className="text-2xl font-bold">{systemMetrics.geminiApiCalls}</div>
+                                <p className="text-xs text-muted-foreground">in the last 24 hours</p>
+                            </CardContent>
+                        </Card>
+                        <Card>
+                            <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
+                                <CardTitle className="text-sm font-medium">Function Invocations</CardTitle>
+                                <Settings className="h-4 w-4 text-muted-foreground" />
+                            </CardHeader>
+                            <CardContent>
+                                <div className="text-2xl font-bold">{systemMetrics.functionInvocations}</div>
+                                <p className="text-xs text-muted-foreground">in the last 24 hours</p>
+                            </CardContent>
+                        </Card>
+                    </div>
                      <Card>
-                         <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
-                            <CardTitle className="text-sm font-medium">Gemini API Calls</CardTitle>
-                            <Bot className="h-4 w-4 text-muted-foreground" />
+                        <CardHeader>
+                            <CardTitle>System Metrics Overview</CardTitle>
+                            <CardDescription>A visual summary of key system metrics.</CardDescription>
                         </CardHeader>
                         <CardContent>
-                            <div className="text-2xl font-bold">{systemMetrics.geminiApiCalls}</div>
-                            <p className="text-xs text-muted-foreground">in the last 24 hours</p>
-                        </CardContent>
-                    </Card>
-                     <Card>
-                         <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
-                            <CardTitle className="text-sm font-medium">Function Invocations</CardTitle>
-                            <Settings className="h-4 w-4 text-muted-foreground" />
-                        </CardHeader>
-                        <CardContent>
-                            <div className="text-2xl font-bold">{systemMetrics.functionInvocations}</div>
-                             <p className="text-xs text-muted-foreground">in the last 24 hours</p>
+                            <SystemMetricsChart 
+                                data={{ ...systemMetrics, activeUsers: allUsers.length }} 
+                            />
                         </CardContent>
                     </Card>
                 </div>

@@ -4,7 +4,7 @@
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import { MainNav } from '@/components/main-nav';
-import { HeartPulse, BotMessageSquare, Stethoscope } from 'lucide-react';
+import { HeartPulse, BotMessageSquare, Stethoscope, ArrowUp } from 'lucide-react';
 import {
   Carousel,
   CarouselContent,
@@ -14,7 +14,7 @@ import {
 } from "@/components/ui/carousel";
 import Image from 'next/image';
 import Autoplay from "embla-carousel-autoplay";
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Accordion,
   AccordionContent,
@@ -24,6 +24,7 @@ import {
 import { ContactForm } from '@/components/contact-form';
 import { Input } from '@/components/ui/input';
 import { useToast } from '@/hooks/use-toast';
+import { cn } from '@/lib/utils';
 
 
 export default function LandingPage() {
@@ -31,6 +32,38 @@ export default function LandingPage() {
         Autoplay({ delay: 5000, stopOnInteraction: true })
     );
     const { toast } = useToast();
+    const [showScroll, setShowScroll] = useState(false);
+
+    useEffect(() => {
+        const checkScroll = () => {
+            if (!showScroll && window.pageYOffset > 400) {
+                setShowScroll(true);
+            } else if (showScroll && window.pageYOffset <= 400) {
+                setShowScroll(false);
+            }
+        };
+
+        window.addEventListener('scroll', checkScroll);
+        return () => window.removeEventListener('scroll', checkScroll);
+    }, [showScroll]);
+    
+    useEffect(() => {
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach((entry) => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('animate-fade-in-up');
+                }
+            });
+        }, { threshold: 0.1 });
+
+        const sections = document.querySelectorAll('section');
+        sections.forEach((section) => {
+            section.classList.add('opacity-0');
+            observer.observe(section);
+        });
+
+        return () => sections.forEach((section) => observer.unobserve(section));
+    }, []);
 
     const handleNewsletterSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -44,11 +77,15 @@ export default function LandingPage() {
         }
     };
 
+    const scrollTop = () => {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    };
+
   return (
     <div className="flex flex-col min-h-screen">
       <MainNav />
       <main className="flex-1">
-        <section className="w-full py-12 md:py-24 lg:py-32 flex items-center justify-center animate-fade-in">
+        <section className="w-full py-12 md:py-24 lg:py-32 flex items-center justify-center">
           <div className="container px-4 md:px-6">
             <div className="grid gap-6 lg:grid-cols-[1fr_400px] lg:gap-12 xl:grid-cols-[1fr_600px] items-center">
               <div className="flex flex-col justify-center space-y-4">
@@ -132,7 +169,7 @@ export default function LandingPage() {
             </div>
           </div>
         </section>
-        <section className="w-full py-12 md:py-24 lg:py-32 bg-transparent animate-fade-in">
+        <section className="w-full py-12 md:py-24 lg:py-32 bg-transparent">
             <div className="container px-4 md:px-6">
                  <div className="flex flex-col items-center justify-center space-y-4 text-center">
                     <div className="space-y-2">
@@ -167,7 +204,7 @@ export default function LandingPage() {
                 </div>
             </div>
         </section>
-        <section className="w-full py-12 md:py-24 lg:py-32 bg-transparent animate-fade-in">
+        <section className="w-full py-12 md:py-24 lg:py-32 bg-transparent">
           <div className="container px-4 md:px-6 text-center">
             <div className="flex flex-col items-center justify-center space-y-4">
               <div className="space-y-2">
@@ -186,7 +223,7 @@ export default function LandingPage() {
             </div>
           </div>
         </section>
-        <section className="w-full py-12 md:py-24 lg:py-32 bg-transparent animate-fade-in">
+        <section className="w-full py-12 md:py-24 lg:py-32 bg-transparent">
           <div className="container px-4 md:px-6">
             <div className="flex flex-col items-center justify-center space-y-4 text-center">
               <div className="space-y-2">
@@ -227,7 +264,7 @@ export default function LandingPage() {
           </div>
         </section>
 
-        <section className="w-full py-12 md:py-24 lg:py-32 bg-transparent animate-fade-in">
+        <section className="w-full py-12 md:py-24 lg:py-32 bg-transparent">
           <div className="container px-4 md:px-6">
             <div className="grid gap-12 lg:grid-cols-2 lg:gap-16">
               <div>
@@ -261,7 +298,18 @@ export default function LandingPage() {
             </div>
           </div>
         </section>
-
+        <Button
+            onClick={scrollTop}
+            className={cn(
+                'fixed bottom-4 right-4 p-2 rounded-full shadow-lg transition-opacity duration-300 z-50',
+                showScroll ? 'opacity-100' : 'opacity-0'
+            )}
+            aria-label="Scroll to top"
+            variant="outline"
+            size="icon"
+        >
+            <ArrowUp className="h-6 w-6" />
+        </Button>
       </main>
       <footer className="flex flex-col gap-6 sm:flex-row py-6 w-full shrink-0 items-center px-4 md:px-6 border-t">
         <p className="text-xs text-muted-foreground">&copy; 2024 MediGem. All rights reserved.</p>
