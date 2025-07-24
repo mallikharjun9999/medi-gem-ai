@@ -28,7 +28,6 @@ import { Switch } from '@/components/ui/switch';
 import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
-import { SystemMetricsChart } from '@/components/system-metrics-chart';
 
 interface AppUser {
     id: string;
@@ -209,17 +208,6 @@ export default function AdminDashboard() {
                             </CardContent>
                         </Card>
                     </div>
-                     <Card>
-                        <CardHeader>
-                            <CardTitle>System Metrics Overview</CardTitle>
-                            <CardDescription>A visual summary of key system metrics.</CardDescription>
-                        </CardHeader>
-                        <CardContent>
-                            <SystemMetricsChart 
-                                data={{ ...systemMetrics, activeUsers: allUsers.length }} 
-                            />
-                        </CardContent>
-                    </Card>
                 </div>
             );
         case 'alerts-config':
@@ -308,3 +296,5 @@ export default function AdminDashboard() {
     </SidebarProvider>
   );
 }
+
+    
