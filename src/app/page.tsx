@@ -20,12 +20,29 @@ import {
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
-} from "@/components/ui/accordion"
+} from "@/components/ui/accordion";
+import { ContactForm } from '@/components/contact-form';
+import { Input } from '@/components/ui/input';
+import { useToast } from '@/hooks/use-toast';
+
 
 export default function LandingPage() {
     const plugin = React.useRef(
         Autoplay({ delay: 5000, stopOnInteraction: true })
     );
+    const { toast } = useToast();
+
+    const handleNewsletterSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        const email = e.currentTarget.email.value;
+        if (email) {
+            toast({
+                title: "Subscribed!",
+                description: "Thank you for subscribing to our newsletter.",
+            });
+            e.currentTarget.reset();
+        }
+    };
 
   return (
     <div className="flex flex-col min-h-screen">
@@ -209,10 +226,46 @@ export default function LandingPage() {
             </div>
           </div>
         </section>
+
+        <section className="w-full py-12 md:py-24 lg:py-32 bg-transparent animate-fade-in">
+          <div className="container px-4 md:px-6">
+            <div className="grid gap-12 lg:grid-cols-2 lg:gap-16">
+              <div>
+                <div className="space-y-2 mb-8">
+                  <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl">Contact Us</h2>
+                  <p className="max-w-[600px] text-muted-foreground md:text-xl/relaxed">
+                    Have a question or need support? Fill out the form and we'll get back to you.
+                  </p>
+                </div>
+                <ContactForm />
+              </div>
+               <div>
+                 <div className="space-y-2 mb-8">
+                   <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl">Our Location</h2>
+                   <p className="max-w-[600px] text-muted-foreground md:text-xl/relaxed">
+                     Find us at our headquarters in the heart of the city.
+                   </p>
+                 </div>
+                 <div className="overflow-hidden rounded-xl">
+                   <iframe
+                     src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3153.497950343003!2d-122.41941568468153!3d37.77492957975883!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8085808c4c1d4f9b%3A0x8f2d1e7df07a3c3e!2sSan%20Francisco%2C%20CA!5e0!3m2!1sen!2sus!4v1626999999999!5m2!1sen!2sus"
+                     width="100%"
+                     height="450"
+                     style={{ border: 0 }}
+                     allowFullScreen={true}
+                     loading="lazy"
+                     referrerPolicy="no-referrer-when-downgrade"
+                   ></iframe>
+                 </div>
+               </div>
+            </div>
+          </div>
+        </section>
+
       </main>
-      <footer className="flex flex-col gap-2 sm:flex-row py-6 w-full shrink-0 items-center px-4 md:px-6 border-t">
+      <footer className="flex flex-col gap-6 sm:flex-row py-6 w-full shrink-0 items-center px-4 md:px-6 border-t">
         <p className="text-xs text-muted-foreground">&copy; 2024 MediGem. All rights reserved.</p>
-        <nav className="sm:ml-auto flex gap-4 sm:gap-6">
+        <nav className="sm:ml-auto flex gap-4 sm:gap-6 items-center">
           <Link href="#" className="text-xs hover:underline underline-offset-4" prefetch={false}>
             Terms of Service
           </Link>
@@ -220,6 +273,12 @@ export default function LandingPage() {
             Privacy
           </Link>
         </nav>
+        <div className="sm:border-l sm:pl-6">
+            <form className="flex gap-2" onSubmit={handleNewsletterSubmit}>
+                <Input type="email" name="email" placeholder="Enter your email" className="max-w-xs" />
+                <Button type="submit">Subscribe</Button>
+            </form>
+        </div>
       </footer>
     </div>
   );
