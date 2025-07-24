@@ -78,8 +78,8 @@ export default function LandingPage() {
                   <CarouselItem>
                     <Image
                       src="https://www.mindinventory.com/blog/wp-content/uploads/2020/09/chatbots-in-healthcare.webp"
-                      width={600}   // FIXED: width as number
-                      height={400}  // FIXED: height as number
+                      width={600}
+                      height={400}
                       alt="Hero Image 1"
                       data-ai-hint="health technology"
                       className="aspect-[3/2] overflow-hidden rounded-xl object-cover w-full"
@@ -88,8 +88,8 @@ export default function LandingPage() {
                   <CarouselItem>
                     <Image
                       src="https://t4.ftcdn.net/jpg/12/18/92/81/360_F_1218928168_okyiOqlFkPrjBho39i5ObPYj1l1m3k7i.jpg"
-                      width={600}  // FIXED
-                      height={400} // FIXED
+                      width={600}
+                      height={400}
                       alt="Hero Image 2"
                       data-ai-hint="patient doctor consultation"
                       className="aspect-[3/2] overflow-hidden rounded-xl object-cover w-full"
@@ -98,8 +98,8 @@ export default function LandingPage() {
                   <CarouselItem>
                     <Image
                       src="https://thumbs.dreamstime.com/b/smartphone-remote-medical-care-vector-illustration-people-mobile-phone-healthcare-consultation-doctors-device-96655510.jpg"
-                      width={600}  // FIXED
-                      height={400} // FIXED
+                      width={600}
+                      height={400}
                       alt="Hero Image 3"
                       data-ai-hint="vital signs monitoring"
                       className="aspect-[3/2] overflow-hidden rounded-xl object-cover w-full"
@@ -108,8 +108,8 @@ export default function LandingPage() {
                    <CarouselItem>
                     <Image
                       src="https://st4.depositphotos.com/1177973/22931/i/450/depositphotos_229313988-stock-photo-female-doctor-consulting-senior-patient.jpg"
-                      width={600}  // FIXED
-                      height={400} // FIXED
+                      width={600}
+                      height={400}
                       alt="Hero Image 4"
                       data-ai-hint="doctor patient"
                       className="aspect-[3/2] overflow-hidden rounded-xl object-cover w-full"
@@ -118,8 +118,8 @@ export default function LandingPage() {
                    <CarouselItem>
                     <Image
                       src="https://photos.peopleimages.com/picture/202311/2956950-nurse-hands-home-and-blood-pressure-test-for-healthcare-service-support-and-caregiver-for-medical-monitor.-adn-worker-or-doctor-with-patient-arm-for-helping-of-diabetes-or-hypertension-exam-on-sofa-fit_400_400.jpg"
-                      width={600}  // FIXED
-                      height={400} // FIXED
+                      width={600}
+                      height={400}
                       alt="Hero Image 5"
                       data-ai-hint="nurse patient blood pressure"
                       className="aspect-[3/2] overflow-hidden rounded-xl object-cover w-full"
@@ -265,16 +265,15 @@ export default function LandingPage() {
       <footer className="flex flex-col gap-6 sm:flex-row py-6 w-full shrink-0 items-center px-4 md:px-6 border-t">
         <p className="text-xs text-muted-foreground">&copy; 2024 MediGem. All rights reserved.</p>
         <nav className="sm:ml-auto flex gap-4 sm:gap-6 items-center">
-          <Link href="#" className="text-xs hover:underline underline-offset-4" prefetch={false as any}>
-            {/* FIXED: prefetch={false} type warning */}
+          <Link href="#" className="text-xs hover:underline underline-offset-4" prefetch={false}>
             Terms of Service
           </Link>
-          <Link href="#" className="text-xs hover:underline underline-offset-4" prefetch={false as any}>
+          <Link href="#" className="text-xs hover:underline underline-offset-4" prefetch={false}>
             Privacy
           </Link>
         </nav>
         <div className="sm:border-l sm:pl-6">
-            <form className="flex gap-2" onSubmit={handleNewsletterSubmit}>
+            <form className="flex flex-col sm:flex-row gap-2" onSubmit={handleNewsletterSubmit}>
                 <Input type="email" name="email" placeholder="Enter your email" className="max-w-xs" />
                 <Button type="submit">Subscribe</Button>
             </form>
