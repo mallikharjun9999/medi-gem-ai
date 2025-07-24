@@ -4,7 +4,7 @@
 
 body {
   font-family: Arial, Helvetica, sans-serif;
-  background-image: url('https://t4.ftcdn.net/jpg/04/71/37/41/360_F_471374128_8993i5Rs3r3WIFpnrlBNnxXUCLdb53V7.jpg');
+  background-image: url('https://t4.ftcdn.net/jpg/04/24/30/93/360_F_424309320_UkOxg2z3sq7yXwGnWCO6xBXkRI4byhnI.jpg');
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -13,24 +13,24 @@ body {
 
 @layer base {
   :root {
-    --background: 206 33% 95% / 0.8;
+    --background: 222.2 84% 4.9% / 0.8;
     --foreground: 0 0% 90%;
-    --card: 0 0% 100% / 0.8;
+    --card: 222.2 84% 4.9% / 0.8;
     --card-foreground: 0 0% 90%;
-    --popover: 0 0% 100%;
+    --popover: 222.2 84% 4.9%;
     --popover-foreground: 0 0% 90%;
     --primary: 207 70% 53%;
     --primary-foreground: 0 0% 100%;
-    --secondary: 220 13% 91% / 0.8;
+    --secondary: 217.2 32.6% 17.5% / 0.8;
     --secondary-foreground: 0 0% 90%;
-    --muted: 220 13% 91% / 0.8;
+    --muted: 217.2 32.6% 17.5% / 0.8;
     --muted-foreground: 0 0% 80%;
     --accent: 145 63% 49%;
     --accent-foreground: 0 0% 100%;
-    --destructive: 0 84.2% 60.2%;
+    --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 0 0% 100%;
-    --border: 220 13% 91%;
-    --input: 220 13% 91%;
+    --border: 217.2 32.6% 17.5%;
+    --input: 217.2 32.6% 17.5%;
     --ring: 207 70% 53%;
     --chart-1: 207 70% 53%;
     --chart-2: 145 63% 49%;
@@ -38,13 +38,13 @@ body {
     --chart-4: 280 65% 60%;
     --chart-5: 340 75% 55%;
     --radius: 0.5rem;
-    --sidebar-background: 0 0% 98% / 0.8;
-    --sidebar-foreground: 240 5.3% 26.1%;
-    --sidebar-primary: 240 5.9% 10%;
-    --sidebar-primary-foreground: 0 0% 98%;
-    --sidebar-accent: 240 4.8% 95.9% / 0.8;
-    --sidebar-accent-foreground: 240 5.9% 10%;
-    --sidebar-border: 220 13% 91%;
+    --sidebar-background: 222.2 84% 4.9% / 0.8;
+    --sidebar-foreground: 210 40% 98%;
+    --sidebar-primary: 210 40% 98%;
+    --sidebar-primary-foreground: 222.2 84% 4.9%;
+    --sidebar-accent: 217.2 32.6% 17.5% / 0.8;
+    --sidebar-accent-foreground: 210 40% 98%;
+    --sidebar-border: 217.2 32.6% 17.5%;
     --sidebar-ring: 217.2 91.2% 59.8%;
   }
   .dark {
