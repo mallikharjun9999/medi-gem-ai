@@ -1,25 +1,16 @@
+
 "use client"
 
 import { Pie, PieChart, Line, LineChart, CartesianGrid, XAxis, Tooltip, Legend } from "recharts"
 import {
   ChartConfig,
   ChartContainer,
+  ChartTooltip,
   ChartTooltipContent,
   ChartLegend,
   ChartLegendContent,
 } from "@/components/ui/chart"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "./ui/card"
-
-const systemHealthData = [
-  { metric: "Vitals Logs", value: 1254, fill: "var(--color-vitals)" },
-  { metric: "Active Users", value: 23, fill: "var(--color-users)" },
-  { metric: "Alerts", value: 42, fill: "var(--color-alerts)" },
-]
-
-const apiUsageData = [
-    { metric: "Gemini Calls", value: 789, fill: "var(--color-gemini)" },
-    { metric: "Invocations", value: 1560, fill: "var(--color-invocations)" },
-]
 
 const trendsData = [
   { date: "Day 1", vitals: 150, users: 5, alerts: 3, gemini: 100, invocations: 200 },
