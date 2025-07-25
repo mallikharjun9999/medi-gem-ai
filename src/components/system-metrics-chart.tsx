@@ -148,6 +148,7 @@ export function SystemMetricsChart({ metrics }: SystemMetricsChartProps) {
                         <Line dataKey="alerts" type="monotone" stroke="var(--color-alerts)" strokeWidth={2} dot={false} />
                         <Line dataKey="gemini" type="monotone" stroke="var(--color-gemini)" strokeWidth={2} dot={false} />
                         <Line dataKey="invocations" type="monotone" stroke="var(--color-invocations)" strokeWidth={2} dot={false} />
+                         <ChartLegend content={<ChartLegendContent />} />
                     </LineChart>
                 </ChartContainer>
             </CardContent>
