@@ -1,4 +1,3 @@
-
 "use client"
 
 import { Pie, PieChart, Line, LineChart, CartesianGrid, XAxis, Tooltip, Legend } from "recharts"
@@ -73,19 +72,6 @@ interface SystemMetricsChartProps {
     }
 }
 
-const RADIAN = Math.PI / 180;
-const renderCustomizedLabel = ({ cx, cy, midAngle, innerRadius, outerRadius, percent, index, payload }: any) => {
-  const radius = innerRadius + (outerRadius - innerRadius) * 0.5;
-  const x = cx + radius * Math.cos(-midAngle * RADIAN);
-  const y = cy + radius * Math.sin(-midAngle * RADIAN);
-
-  return (
-    <text x={x} y={y} fill="white" textAnchor={x > cx ? 'start' : 'end'} dominantBaseline="central">
-      {`${payload.metric} (${(percent * 100).toFixed(0)}%)`}
-    </text>
-  );
-};
-
 export function SystemMetricsChart({ metrics }: SystemMetricsChartProps) {
     const systemHealthData = [
         { metric: "Vitals Logs", value: metrics.totalLogs, fill: "var(--color-vitals)" },
@@ -115,7 +101,7 @@ export function SystemMetricsChart({ metrics }: SystemMetricsChartProps) {
                     cursor={false}
                     content={<ChartTooltipContent hideLabel />}
                     />
-                    <Pie data={systemHealthData} dataKey="value" nameKey="metric" innerRadius={0} labelLine={false} label={renderCustomizedLabel} />
+                    <Pie data={systemHealthData} dataKey="value" nameKey="metric" innerRadius={0} />
                 </PieChart>
                 </ChartContainer>
             </CardContent>
@@ -135,7 +121,7 @@ export function SystemMetricsChart({ metrics }: SystemMetricsChartProps) {
                         cursor={false}
                         content={<ChartTooltipContent hideLabel />}
                         />
-                        <Pie data={apiUsageData} dataKey="value" nameKey="metric" innerRadius={60} labelLine={false} label={renderCustomizedLabel}/>
+                        <Pie data={apiUsageData} dataKey="value" nameKey="metric" innerRadius={60} />
                     </PieChart>
                 </ChartContainer>
             </CardContent>
