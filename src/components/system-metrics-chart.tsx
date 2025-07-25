@@ -81,7 +81,7 @@ export function SystemMetricsChart({ metrics }: SystemMetricsChartProps) {
 
   return (
     <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-        <Card>
+        <Card className="bg-card/90">
             <CardHeader>
                 <CardTitle>System Health Overview</CardTitle>
                 <CardDescription>A summary of key system health metrics.</CardDescription>
@@ -102,13 +102,13 @@ export function SystemMetricsChart({ metrics }: SystemMetricsChartProps) {
                         ))}
                     </Pie>
                     <ChartLegend
-                        content={<ChartLegendContent nameKey="metric" />}
+                        content={<ChartLegendContent nameKey="metric" className="text-foreground" />}
                     />
                 </PieChart>
                 </ChartContainer>
             </CardContent>
         </Card>
-        <Card>
+        <Card className="bg-card/90">
             <CardHeader>
                 <CardTitle>API & Function Usage</CardTitle>
                 <CardDescription>Usage statistics for backend services.</CardDescription>
@@ -129,13 +129,13 @@ export function SystemMetricsChart({ metrics }: SystemMetricsChartProps) {
                             ))}
                         </Pie>
                          <ChartLegend
-                            content={<ChartLegendContent nameKey="metric" />}
+                            content={<ChartLegendContent nameKey="metric" className="text-foreground" />}
                         />
                     </PieChart>
                 </ChartContainer>
             </CardContent>
         </Card>
-        <Card className="col-span-1 lg:col-span-3">
+        <Card className="col-span-1 lg:col-span-3 bg-card/90">
             <CardHeader>
                 <CardTitle>Usage Trends (Last 7 Days)</CardTitle>
                 <CardDescription>Metrics trends over the last week.</CardDescription>
@@ -143,12 +143,13 @@ export function SystemMetricsChart({ metrics }: SystemMetricsChartProps) {
             <CardContent>
                  <ChartContainer config={trendsConfig} className="min-h-[300px] w-full">
                     <LineChart data={trendsData} margin={{ left: 12, right: 12 }}>
-                        <CartesianGrid vertical={false} />
+                        <CartesianGrid vertical={false} stroke="hsl(var(--muted-foreground))" strokeDasharray="3 3" />
                         <XAxis
                         dataKey="date"
                         tickLine={false}
                         axisLine={false}
                         tickMargin={8}
+                        tick={{ fill: 'hsl(var(--foreground))' }}
                         />
                         <Tooltip content={<ChartTooltipContent />} />
                         <Line dataKey="vitals" type="monotone" stroke="var(--color-vitals)" strokeWidth={2} dot={false} />
@@ -156,7 +157,7 @@ export function SystemMetricsChart({ metrics }: SystemMetricsChartProps) {
                         <Line dataKey="alerts" type="monotone" stroke="var(--color-alerts)" strokeWidth={2} dot={false} />
                         <Line dataKey="gemini" type="monotone" stroke="var(--color-gemini)" strokeWidth={2} dot={false} />
                         <Line dataKey="invocations" type="monotone" stroke="var(--color-invocations)" strokeWidth={2} dot={false} />
-                         <ChartLegend content={<ChartLegendContent />} />
+                         <ChartLegend content={<ChartLegendContent className="text-foreground" />} />
                     </LineChart>
                 </ChartContainer>
             </CardContent>
