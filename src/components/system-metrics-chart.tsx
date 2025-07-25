@@ -1,3 +1,4 @@
+
 "use client"
 
 import { Pie, PieChart, Line, LineChart, CartesianGrid, XAxis, Tooltip } from "recharts"
@@ -6,8 +7,6 @@ import {
   ChartContainer,
   ChartTooltip,
   ChartTooltipContent,
-  ChartLegend,
-  ChartLegendContent,
 } from "@/components/ui/chart"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "./ui/card"
 
@@ -96,7 +95,6 @@ export function SystemMetricsChart({ metrics }: SystemMetricsChartProps) {
                     content={<ChartTooltipContent hideLabel />}
                     />
                     <Pie data={systemHealthData} dataKey="value" nameKey="metric" innerRadius={0} />
-                    <ChartLegend content={<ChartLegendContent nameKey="metric" />} />
                 </PieChart>
                 </ChartContainer>
             </CardContent>
@@ -117,7 +115,6 @@ export function SystemMetricsChart({ metrics }: SystemMetricsChartProps) {
                         content={<ChartTooltipContent hideLabel />}
                         />
                         <Pie data={apiUsageData} dataKey="value" nameKey="metric" innerRadius={60} />
-                        <ChartLegend content={<ChartLegendContent nameKey="metric" />} />
                     </PieChart>
                 </ChartContainer>
             </CardContent>
@@ -138,7 +135,6 @@ export function SystemMetricsChart({ metrics }: SystemMetricsChartProps) {
                         tickMargin={8}
                         />
                         <Tooltip content={<ChartTooltipContent />} />
-                        <ChartLegend content={<ChartLegendContent />} />
                         <Line dataKey="vitals" type="monotone" stroke="var(--color-vitals)" strokeWidth={2} dot={false} />
                         <Line dataKey="users" type="monotone" stroke="var(--color-users)" strokeWidth={2} dot={false} />
                         <Line dataKey="alerts" type="monotone" stroke="var(--color-alerts)" strokeWidth={2} dot={false} />
