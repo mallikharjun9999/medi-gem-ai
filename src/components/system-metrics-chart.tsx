@@ -1,6 +1,6 @@
 "use client"
 
-import { Pie, PieChart, Line, LineChart, CartesianGrid, XAxis, Tooltip, Legend } from "recharts"
+import { Pie, PieChart, Line, LineChart, CartesianGrid, XAxis, Tooltip } from "recharts"
 import {
   ChartConfig,
   ChartContainer,
@@ -23,32 +23,26 @@ const trendsData = [
 
 
 const systemHealthConfig = {
-  value: {
-    label: "Count",
-  },
-  vitals: {
+  "Vitals Logs": {
     label: "Vitals Logs",
     color: "hsl(var(--chart-1))",
   },
-  users: {
+  "Active Users": {
     label: "Active Users",
     color: "hsl(var(--chart-2))",
   },
-  alerts: {
+  "Alerts": {
     label: "Critical Alerts",
     color: "hsl(var(--chart-3))",
   },
 } satisfies ChartConfig
 
 const apiUsageConfig = {
-    value: {
-      label: "Count",
-    },
-    gemini: {
+    "Gemini Calls": {
       label: "Gemini API Calls",
       color: "hsl(var(--chart-4))",
     },
-    invocations: {
+    "Invocations": {
       label: "Function Invocations",
       color: "hsl(var(--chart-5))",
     },
@@ -74,14 +68,14 @@ interface SystemMetricsChartProps {
 
 export function SystemMetricsChart({ metrics }: SystemMetricsChartProps) {
     const systemHealthData = [
-        { metric: "Vitals Logs", value: metrics.totalLogs, fill: "var(--color-vitals)" },
-        { metric: "Active Users", value: metrics.activeUsers, fill: "var(--color-users)" },
-        { metric: "Alerts", value: metrics.alertCount, fill: "var(--color-alerts)" },
+        { metric: "Vitals Logs", value: metrics.totalLogs, fill: "var(--color-Vitals Logs)" },
+        { metric: "Active Users", value: metrics.activeUsers, fill: "var(--color-Active Users)" },
+        { metric: "Alerts", value: metrics.alertCount, fill: "var(--color-Alerts)" },
     ]
 
     const apiUsageData = [
-        { metric: "Gemini Calls", value: metrics.geminiApiCalls, fill: "var(--color-gemini)" },
-        { metric: "Invocations", value: metrics.functionInvocations, fill: "var(--color-invocations)" },
+        { metric: "Gemini Calls", value: metrics.geminiApiCalls, fill: "var(--color-Gemini Calls)" },
+        { metric: "Invocations", value: metrics.functionInvocations, fill: "var(--color-Invocations)" },
     ]
 
   return (
@@ -102,6 +96,7 @@ export function SystemMetricsChart({ metrics }: SystemMetricsChartProps) {
                     content={<ChartTooltipContent hideLabel />}
                     />
                     <Pie data={systemHealthData} dataKey="value" nameKey="metric" innerRadius={0} />
+                    <ChartLegend content={<ChartLegendContent nameKey="metric" />} />
                 </PieChart>
                 </ChartContainer>
             </CardContent>
@@ -122,6 +117,7 @@ export function SystemMetricsChart({ metrics }: SystemMetricsChartProps) {
                         content={<ChartTooltipContent hideLabel />}
                         />
                         <Pie data={apiUsageData} dataKey="value" nameKey="metric" innerRadius={60} />
+                        <ChartLegend content={<ChartLegendContent nameKey="metric" />} />
                     </PieChart>
                 </ChartContainer>
             </CardContent>
@@ -142,7 +138,7 @@ export function SystemMetricsChart({ metrics }: SystemMetricsChartProps) {
                         tickMargin={8}
                         />
                         <Tooltip content={<ChartTooltipContent />} />
-                        <Legend content={<ChartLegendContent />} />
+                        <ChartLegend content={<ChartLegendContent />} />
                         <Line dataKey="vitals" type="monotone" stroke="var(--color-vitals)" strokeWidth={2} dot={false} />
                         <Line dataKey="users" type="monotone" stroke="var(--color-users)" strokeWidth={2} dot={false} />
                         <Line dataKey="alerts" type="monotone" stroke="var(--color-alerts)" strokeWidth={2} dot={false} />
