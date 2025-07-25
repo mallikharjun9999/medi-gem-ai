@@ -28,6 +28,7 @@ import { Switch } from '@/components/ui/switch';
 import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
+import { SystemMetricsChart } from '@/components/system-metrics-chart';
 
 interface AppUser {
     id: string;
@@ -159,7 +160,7 @@ export default function AdminDashboard() {
         case 'system-metrics':
             return (
                 <div className="grid gap-6">
-                    <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+                    <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-5">
                         <Card>
                             <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
                                 <CardTitle className="text-sm font-medium">Total Vitals Logs</CardTitle>
@@ -208,6 +209,7 @@ export default function AdminDashboard() {
                             </CardContent>
                         </Card>
                     </div>
+                     <SystemMetricsChart metrics={{...systemMetrics, activeUsers: allUsers.length}} />
                 </div>
             );
         case 'alerts-config':
