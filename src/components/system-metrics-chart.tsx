@@ -1,7 +1,7 @@
 
 "use client"
 
-import { Pie, PieChart, Line, LineChart, CartesianGrid, XAxis, Tooltip } from "recharts"
+import { Pie, PieChart, Line, LineChart, CartesianGrid, XAxis, Tooltip, Cell } from "recharts"
 import {
   ChartConfig,
   ChartContainer,
@@ -96,7 +96,11 @@ export function SystemMetricsChart({ metrics }: SystemMetricsChartProps) {
                     cursor={false}
                     content={<ChartTooltipContent hideLabel />}
                     />
-                    <Pie data={systemHealthData} dataKey="value" nameKey="metric" innerRadius={0} />
+                    <Pie data={systemHealthData} dataKey="value" nameKey="metric" innerRadius={0}>
+                        {systemHealthData.map((entry, index) => (
+                            <Cell key={`cell-${index}`} fill={entry.fill} />
+                        ))}
+                    </Pie>
                     <ChartLegend
                         content={<ChartLegendContent nameKey="metric" />}
                     />
@@ -119,7 +123,11 @@ export function SystemMetricsChart({ metrics }: SystemMetricsChartProps) {
                         cursor={false}
                         content={<ChartTooltipContent hideLabel />}
                         />
-                        <Pie data={apiUsageData} dataKey="value" nameKey="metric" innerRadius={60} />
+                        <Pie data={apiUsageData} dataKey="value" nameKey="metric" innerRadius={60}>
+                             {apiUsageData.map((entry, index) => (
+                                <Cell key={`cell-${index}`} fill={entry.fill} />
+                            ))}
+                        </Pie>
                          <ChartLegend
                             content={<ChartLegendContent nameKey="metric" />}
                         />
