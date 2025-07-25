@@ -7,6 +7,8 @@ import {
   ChartContainer,
   ChartTooltip,
   ChartTooltipContent,
+  ChartLegend,
+  ChartLegendContent,
 } from "@/components/ui/chart"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "./ui/card"
 
@@ -95,6 +97,9 @@ export function SystemMetricsChart({ metrics }: SystemMetricsChartProps) {
                     content={<ChartTooltipContent hideLabel />}
                     />
                     <Pie data={systemHealthData} dataKey="value" nameKey="metric" innerRadius={0} />
+                    <ChartLegend
+                        content={<ChartLegendContent nameKey="metric" />}
+                    />
                 </PieChart>
                 </ChartContainer>
             </CardContent>
@@ -115,6 +120,9 @@ export function SystemMetricsChart({ metrics }: SystemMetricsChartProps) {
                         content={<ChartTooltipContent hideLabel />}
                         />
                         <Pie data={apiUsageData} dataKey="value" nameKey="metric" innerRadius={60} />
+                         <ChartLegend
+                            content={<ChartLegendContent nameKey="metric" />}
+                        />
                     </PieChart>
                 </ChartContainer>
             </CardContent>
